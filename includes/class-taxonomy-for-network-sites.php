@@ -68,14 +68,23 @@ class Taxonomy_For_Network_Sites {
 	 */
 	public function __construct() {
 
-		$this->plugin_name = 'taxonomy-for-network-sites';
-		$this->version = '1.0.0';
+		$this->define_constants();
 
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+	}
+	
+	private function define_constants(){
+		$this->plugin_name = 'taxonomy-for-network-sites';
+		$this->version = '1.0.0';
+		//views used for the DB
+		if (!defined('T4NS_TAXONOMY'))
+			define('T4NS_TAXONOMY', 'category_for_network_sites');
+		if (!defined('T4NS_CUSTOM_POST'))
+			define('T4NS_CUSTOM_POST', 't4ns_post');
 	}
 
 	/**

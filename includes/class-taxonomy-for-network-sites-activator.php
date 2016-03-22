@@ -29,8 +29,16 @@ class Taxonomy_For_Network_Sites_Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
-
+	public static function activate($networkwide) {
+    //TODO: do we need to activate on separate sites?  At this point most likely not
+    if (function_exists('is_multisite') && is_multisite()) {
+      //$old_blog = $wpdb->blogid;
+      //switch_to_blog(1);
+      //switch_to_blog($old_blog);
+      return;
+    }else{
+      exit("Network Wide Posts works only on multisites");
+    }
 	}
 
 }

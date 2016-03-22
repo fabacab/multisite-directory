@@ -34,18 +34,18 @@ if ( ! defined( 'WPINC' ) ) {
  * The code that runs during plugin activation.
  * This action is documented in includes/class-taxonomy-for-network-sites-activator.php
  */
-function activate_taxonomy_for_network_sites() {
+function activate_taxonomy_for_network_sites($networkwide) {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-taxonomy-for-network-sites-activator.php';
-	Taxonomy_For_Network_Sites_Activator::activate();
+	Taxonomy_For_Network_Sites_Activator::activate($networkwide);
 }
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-taxonomy-for-network-sites-deactivator.php
  */
-function deactivate_taxonomy_for_network_sites() {
+function deactivate_taxonomy_for_network_sites($networkwide) {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-taxonomy-for-network-sites-deactivator.php';
-	Taxonomy_For_Network_Sites_Deactivator::deactivate();
+	Taxonomy_For_Network_Sites_Deactivator::deactivate($networkwide);
 }
 
 register_activation_hook( __FILE__, 'activate_taxonomy_for_network_sites' );
