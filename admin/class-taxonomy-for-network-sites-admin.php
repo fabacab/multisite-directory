@@ -99,5 +99,10 @@ class Taxonomy_For_Network_Sites_Admin {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/taxonomy-for-network-sites-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
+	
+	public function add_category_submenu_to_sites(){
+		//add_submenu_page ( string $parent_slug, string $page_title, string $menu_title, string $capability, string $menu_slug, callable $function = '' )
+		add_submenu_page( 'sites.php', 'Sites Categories', 'Categories', 'manage_sites', '../edit-tags.php?taxonomy=category&post_type=post', '' );
+	}
 
 }

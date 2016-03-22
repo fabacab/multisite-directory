@@ -77,6 +77,17 @@ class Taxonomy_For_Network_Sites {
 
 	}
 	
+	/**
+	 * Load the required constants for this plugin.
+	 *
+	 * Include the following constants:
+	 *
+	 * - T4NS_TAXONOMY - the name of the registered category used for sites
+	 * - T4NS_CUSTOM_POST - the custom post used to store site meta
+	 * 
+	 * @since    1.0.0
+	 * @access   private
+	 */
 	private function define_constants(){
 		$this->plugin_name = 'taxonomy-for-network-sites';
 		$this->version = '1.0.0';
@@ -162,6 +173,9 @@ class Taxonomy_For_Network_Sites {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		
+		//submenu for Network dashboard menu Sites
+		$this->loader->add_action( 'network_admin_menu', $plugin_admin, 'add_category_submenu_to_sites' );
 
 	}
 
