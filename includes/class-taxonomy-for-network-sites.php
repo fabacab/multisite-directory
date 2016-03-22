@@ -93,7 +93,7 @@ class Taxonomy_For_Network_Sites {
 		$this->version = '1.0.0';
 		//views used for the DB
 		if (!defined('T4NS_TAXONOMY'))
-			define('T4NS_TAXONOMY', 'category_for_network_sites');
+			define('T4NS_TAXONOMY', 't4ns_category');
 		if (!defined('T4NS_CUSTOM_POST'))
 			define('T4NS_CUSTOM_POST', 't4ns_post');
 	}
@@ -176,7 +176,9 @@ class Taxonomy_For_Network_Sites {
 		
 		//submenu for Network dashboard menu Sites
 		$this->loader->add_action( 'network_admin_menu', $plugin_admin, 'add_category_submenu_to_sites' );
-
+		//resgister our custom taxnonmy/post
+		$this->loader->add_action( 'init', $plugin_admin, 'regsiter_custom_taxonomy');
+		$this->loader->add_action( 'init', $plugin_admin, 'regsiter_custom_post');
 	}
 
 	/**
