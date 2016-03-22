@@ -75,6 +75,8 @@ The terms are stored in 2 tables, wp_network_taxonomy_term, and wp_network_term_
 
 == Future updates ==
 
+Enable assignment of terms when creating new site using the new filers introduced in WP (see https://core.trac.wordpress.org/ticket/34739)
+
 Allow child-sites Admins to add their site to a given category.
 
 A funciton Retrieve a an array of sites for a given term for theme developers.
