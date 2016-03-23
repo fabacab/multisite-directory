@@ -32,10 +32,9 @@ class Taxonomy_For_Network_Sites_Activator {
 	public static function activate($networkwide) {
     //TODO: do we need to activate on separate sites?  At this point most likely not
     if (function_exists('is_multisite') && is_multisite()) {
-      //$old_blog = $wpdb->blogid;
-      //switch_to_blog(1);
-      //switch_to_blog($old_blog);
+      
       //let's register our taxonoy and post, as well as create wrapper post for each site
+      switch_to_blog(1);
       require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-network-sites-wrapper.php';
       Network_Sites_Wrapper::initialise();
       return;
