@@ -87,6 +87,8 @@ class Taxonomy_For_Network_Sites {
 	private function define_constants(){
 		$this->plugin_name = 'taxonomy-for-network-sites';
 		$this->version = '1.0.0';
+		//if (!defined('SOME_CONSTANT'))
+		//	define('SOME_CONSTANT', 'some value');
 	}
 
 	/**
