@@ -73,7 +73,7 @@ class Network_Sites_Wrapper {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-    $this->initialise();
+    //$this->initialise();
 	}
   /*
    * Initialise sites wrapper with custom post and taxonomy
@@ -150,7 +150,7 @@ class Network_Sites_Wrapper {
         'show_in_nav_menus'          => true,
         'show_tagcloud'              => true,
         'capabilities'               => $capabilities,
-        'update_count_callback'      => array($this, 'site_assigned_term_update'),
+        'update_count_callback'      => '',
       );
       //register_taxonomy( $taxonomy, $object_type, $args );
       register_taxonomy( self::T4NS_TAXONOMY, self::T4NS_CUSTOM_POST, $args );

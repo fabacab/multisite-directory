@@ -37,7 +37,7 @@ class Taxonomy_For_Network_Sites_Activator {
       //switch_to_blog($old_blog);
       //let's register our taxonoy and post, as well as create wrapper post for each site
       require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-network-sites-wrapper.php';
-      Netwwork_Sites_Wrapper::initialise();
+      Network_Sites_Wrapper::initialise();
       return;
     }else{
       exit("Network Wide Posts works only on multisites");
