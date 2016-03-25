@@ -12,7 +12,7 @@
 /**
  * Class defining a "Subsite" custom post type.
  */
-class Multisite_Directory_Subsite_Post {
+class Multisite_Directory_Entry {
 
     /**
      * Name of the custom post type.

@@ -5,11 +5,11 @@
  * WordPress plugin header information:
  *
  * * Plugin Name: Multisite Directory
- * * Plugin URI: TK-TODO
- * * Description: Adds an easy-to-use site directory to your WordPress Multisite network.
+ * * Plugin URI: https://wordpress.org/plugins/multisite-directory/
+ * * Description: Adds a Network-wide site directory to your WP Multisite network.
  * * Version: 0.0.1
- * * Author: TK-TODO
- * * Author URI: TK-TODO
+ * * Author: Meitar Moscovitz <meitar@maymay.net>
+ * * Author URI: https://maymay.net/
  * * Text Domain: multisite-directory
  * * Domain Path: /languages
  *
@@ -33,10 +33,10 @@ class WP_Multisite_Directory {
      * Registers plugin functionality with the WordPress API.
      */
     public static function register () {
-        require_once 'includes/class-site-directory-taxonomy.php';
-        require_once 'includes/class-site-directory-post.php';
+        require_once 'includes/class-multisite-directory-taxonomy.php';
+        require_once 'includes/class-multisite-directory-entry.php';
         require_once 'includes/functions.php';
-        require_once 'admin/class-site-directory-admin.php';
+        require_once 'admin/class-multisite-directory-admin.php';
 
         add_action('init', array(__CLASS__, 'initialize'));
         add_action('wpmu_new_blog', array(__CLASS__, 'wpmu_new_blog'));
@@ -56,7 +56,7 @@ class WP_Multisite_Directory {
         $tax = new Multisite_Directory_Taxonomy();
         $tax->register();
 
-        $cpt = new Multisite_Directory_Subsite_Post();
+        $cpt = new Multisite_Directory_Entry();
         $cpt->register();
     }
 
@@ -66,7 +66,7 @@ class WP_Multisite_Directory {
      * @link https://developer.wordpress.org/reference/hooks/wpmu_new_blog/
      */
     public static function wpmu_new_blog ($blog_id) {
-        $cpt = new Multisite_Directory_Subsite_Post();
+        $cpt = new Multisite_Directory_Entry();
         $cpt->add_new_site_post($blog_id);
     }
 
@@ -104,7 +104,7 @@ class WP_Multisite_Directory {
      */
     private function initializeDirectory () {
         $sites = wp_get_sites();
-        $cpt = new Multisite_Directory_Subsite_Post();
+        $cpt = new Multisite_Directory_Entry();
         foreach ($sites as $site) {
             if ($site['spam']) {
                 continue;
