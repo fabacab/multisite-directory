@@ -1,11 +1,11 @@
-# taxonomy-for-network-sites
+Multisite Network Directory
 === Network-wide posts ===
-Contributors: aurovrata
+Contributors: aurovrata, meitar
 Donate link: http://syllogic.in
 Tags: multisite, network, taxonomy, posts
-Requires at least: 3.0.1
-Tested up to: 4.4.1
-Stable tag: 4.4
+Requires at least: 4.2.0
+Tested up to: 4.4.2
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
