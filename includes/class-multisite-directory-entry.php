@@ -69,6 +69,7 @@ class Multisite_Directory_Entry {
             'public'       => true,
             'show_in_menu' => (1 === get_current_blog_id()) ? true : false,
             'hierarchical' => true,
+            'has_archive'  => true,
             'capabilities' => $this->capabilities,
             'supports'     => array(
                 'title',
