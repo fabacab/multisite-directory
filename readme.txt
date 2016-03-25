@@ -2,7 +2,7 @@
 Contributors: aurovrata, meitar
 Donate link: http://syllogic.in
 Tags: multisite, network, taxonomy, posts
-Requires at least: 4.2.0
+Requires at least: 4.4.0
 Tested up to: 4.4.2
 Stable tag: trunk
 License: GPLv2 or later
