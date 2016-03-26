@@ -15,6 +15,30 @@
 class WP_Multisite_Directory_Admin {
 
     /**
+     * Enqueues JavaScript needed on admin pages.
+     *
+     * @link https://developer.wordpress.org/reference/hooks/admin_enqueue_scripts/
+     *
+     * @param string $hook_suffix
+     */
+    public static function enqueue_scripts ($hook_suffix) {
+        $screen = get_current_screen();
+        if ('edit-'.Multisite_Directory_Taxonomy::name === $screen->id) {
+            wp_enqueue_style(
+                'leaflet',
+                'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css'
+            );
+            wp_enqueue_script(
+                'leaflet',
+                'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js',
+                array(),
+                false,
+                true
+            );
+        }
+    }
+
+    /**
      * Adds the network directory taxonomy page to the Network Sites menu.
      *
      * @link https://developer.wordpress.org/reference/hooks/network_admin_menu/
