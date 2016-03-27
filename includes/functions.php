@@ -93,3 +93,21 @@ if (!function_exists('the_site_directory_logo')) :
         }
     }
 endif;
+
+if (!function_exists('the_site_permalink')) :
+    /**
+     * Prints the URL of the site.
+     *
+     * @param int $blog_id Optional. The ID of the site whose logo to get. Default is the blog ID of the current directory entry.
+     */
+    function the_site_permalink ($blog_id = 0) {
+        $cpt = new Multisite_Directory_Entry();
+        if (!$blog_id) {
+            global $post;
+            $blog_id = $post->{$cpt::blog_id_meta_key};
+        }
+
+        $blog_details = get_blog_details($blog_id);
+        print $blog_details->siteurl;
+    }
+endif;
