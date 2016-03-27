@@ -35,10 +35,12 @@ class WP_Multisite_Directory {
     public static function register () {
         require_once 'includes/class-multisite-directory-taxonomy.php';
         require_once 'includes/class-multisite-directory-entry.php';
+        require_once 'includes/class-multisite-directory-widget.php';
         require_once 'includes/functions.php';
         require_once 'admin/class-multisite-directory-admin.php';
 
         add_action('init', array(__CLASS__, 'initialize'));
+        add_action('widgets_init', array(__CLASS__, 'widgets_initialize'));
         add_action('wpmu_new_blog', array(__CLASS__, 'wpmu_new_blog'));
         add_action('network_admin_menu', array('WP_Multisite_Directory_Admin', 'network_admin_menu'));
         add_action('signup_blogform', array(__CLASS__, 'signup_blogform'));
@@ -60,6 +62,17 @@ class WP_Multisite_Directory {
 
         $cpt = new Multisite_Directory_Entry();
         $cpt->register();
+    }
+
+    /**
+     * Registers plugin widgets.
+     *
+     * @link https://developer.wordpress.org/reference/hooks/widgets_init/
+     *
+     * @uses register_widget()
+     */
+    public static function widgets_initialize () {
+        register_widget('Multisite_Directory_Widget');
     }
 
     /**
