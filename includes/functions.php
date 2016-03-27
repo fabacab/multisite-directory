@@ -50,3 +50,40 @@ if (!function_exists('get_site_terms')) :
         return $terms;
     }
 endif;
+
+if (!function_exists('the_site_directory_logo')) :
+    /**
+     * Prints the site's custom logo or the site directory entry's featured image, if it has one.
+     *
+     * @uses get_the_post_thumbnail()
+     *
+     * @param int $blog_id Optional. The ID of the site whose logo to get. Default is the current directory entry's site's logo.
+     * @param string|int[] $size
+     * @param string|string[] $attr
+     *
+     * @return void
+     */
+    function the_site_directory_logo ($blog_id = 0, $size = 'post-thumbnail', $attr = '') {
+        $cpt = new Multisite_Directory_Entry();
+        if (!$blog_id) {
+            global $post;
+            $blog_id = $post->{$cpt::blog_id_meta_key};
+        }
+
+        switch_to_blog(1);
+        $posts = $cpt->get_posts(array(
+            'meta_key'  => $cpt::blog_id_meta_key,
+            'meta_value' => $blog_id,
+            'post_status' => 'any',
+        ));
+        $html = get_the_post_thumbnail(array_pop($posts), $size, $attr);
+        restore_current_blog();
+
+        if (empty($html)) {
+            // No post thumbnail, so use the site's custom logo.
+            the_custom_logo($blog_id);
+        } else {
+            print $html;
+        }
+    }
+endif;
