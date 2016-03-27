@@ -55,8 +55,8 @@ class Multisite_Directory_Entry {
      */
     public function __construct () {
         $this->labels = array(
-            'name'                  => _x('Site directory entries', 'Post Type General Name', 'multisite-directory'),
-            'singular_name'         => _x('Site directory entry', 'Post Type Singular Name', 'multisite-directory'),
+            'name'                  => _x('Sites', 'Post Type General Name', 'multisite-directory'),
+            'singular_name'         => _x('Site', 'Post Type Singular Name', 'multisite-directory'),
         );
     }
 
@@ -79,6 +79,7 @@ class Multisite_Directory_Entry {
                 'thumbnail',
                 'page-attributes'
             ),
+            'menu_icon'    => 'dashicons-networking',
             'taxonomies'   => array(Multisite_Directory_Taxonomy::name),
         ));
     }
