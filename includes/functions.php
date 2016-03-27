@@ -29,16 +29,21 @@ endif;
 
 if (!function_exists('get_site_terms')) :
     /**
-     * Gets the categories in the network directory of a given blog.
+     * Gets the categories assigned to a given blog in the network directory.
      *
-     * @param int $blog_id
+     * @param int $blog_id Optional. The ID of the site in question. Default is the blog ID of the current directory entry.
      *
      * @uses get_the_terms()
      *
      * @return array|false|WP_Error
      */
-    function get_site_terms ($blog_id) {
+    function get_site_terms ($blog_id = 0) {
         $cpt = new Multisite_Directory_Entry();
+        if (!$blog_id) {
+            global $post;
+            $blog_id = $post->{$cpt::blog_id_meta_key};
+        }
+
         switch_to_blog(1);
         $posts = $cpt->get_posts(array(
             'meta_key'  => $cpt::blog_id_meta_key,
@@ -47,6 +52,7 @@ if (!function_exists('get_site_terms')) :
         ));
         $terms = get_the_terms(array_pop($posts), Multisite_Directory_Taxonomy::name);
         restore_current_blog();
+
         return $terms;
     }
 endif;
@@ -57,7 +63,7 @@ if (!function_exists('the_site_directory_logo')) :
      *
      * @uses get_the_post_thumbnail()
      *
-     * @param int $blog_id Optional. The ID of the site whose logo to get. Default is the current directory entry's site's logo.
+     * @param int $blog_id Optional. The ID of the site whose logo to get. Default is the blog ID of the current directory entry.
      * @param string|int[] $size
      * @param string|string[] $attr
      *
@@ -79,7 +85,7 @@ if (!function_exists('the_site_directory_logo')) :
         $html = get_the_post_thumbnail(array_pop($posts), $size, $attr);
         restore_current_blog();
 
-        if (empty($html)) {
+        if (empty($html) && function_exists('the_custom_logo')) {
             // No post thumbnail, so use the site's custom logo.
             the_custom_logo($blog_id);
         } else {
