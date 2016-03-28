@@ -116,12 +116,12 @@ class WP_Multisite_Directory {
      * @todo Handle "large" networks correctly.
      */
     private function initializeDirectory () {
-        $sites = wp_get_sites();
+        $sites = wp_get_sites(array(
+            'spam'    => 0, // don't include sites marked as spam
+            'deleted' => 0, // or sites that have been "deleted".
+        ));
         $cpt = new Multisite_Directory_Entry();
         foreach ($sites as $site) {
-            if ($site['spam']) {
-                continue;
-            }
             $posts = $cpt->get_posts(array(
                 'post_status' => 'any',
                 'meta_key'    => $cpt::blog_id_meta_key,
