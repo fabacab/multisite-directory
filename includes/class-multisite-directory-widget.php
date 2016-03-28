@@ -37,7 +37,8 @@ class Multisite_Directory_Widget extends WP_Widget {
         $instance = wp_parse_args($instance, array(
             // Widget defaults.
             'only_locations' => 0,
-            'show_site_logo'  => 1,
+            'show_site_logo' => 1,
+            'site_logo_size' => 'post-thumbnail',
         ));
 ?>
 <p>
@@ -61,6 +62,20 @@ class Multisite_Directory_Widget extends WP_Widget {
     <label for="<?php print $this->get_field_id('show_site_logo');?>">
         <?php esc_html_e('Show site logos', 'multisite-directory');?>
     </label>
+    <label for="<?php print $this->get_field_id('site_logo_size');?>">
+        <?php
+        /* translators: Part of the logo size widget, like "Show site logo at size: " */
+        esc_html_e('at size', 'multisite-directory');
+        ?>
+    </label>
+    <select
+        id="<?php print $this->get_field_id('site_logo_size');?>"
+        name="<?php print $this->get_field_name('site_logo_size');?>"
+    >
+        <?php foreach (get_intermediate_image_sizes() as $size) { if (has_image_size($size)) : ?>
+        <option <?php selected($instance['site_logo_size'], $size);?>><?php print esc_html($size);?></option>
+        <?php endif; } ?>
+    </select>
 </p>
 <?php
     }
@@ -80,6 +95,7 @@ class Multisite_Directory_Widget extends WP_Widget {
 
         $instance['only_locations'] = (int) $new_instance['only_locations'];
         $instance['show_site_logo'] = (int) $new_instance['show_site_logo'];
+        $instance['site_logo_size'] = (has_image_size($new_instance['site_logo_size'])) ? $new_instance['site_logo_size'] : 0;
 
         return $instance;
     }
@@ -118,7 +134,7 @@ class Multisite_Directory_Widget extends WP_Widget {
         <ul>
         <?php foreach ($similar_sites as $site_detail) { if (get_current_blog_id() == $site_detail->blog_id) { continue; } ?>
         <li>
-            <?php if (!empty($instance['show_site_logo'])) { the_site_directory_logo($site_detail->blog_id); } ?>
+            <?php if (!empty($instance['show_site_logo'])) { the_site_directory_logo($site_detail->blog_id, $instance['site_logo_size']); } ?>
             <a href="<?php print esc_url($site_detail->siteurl);?>"><?php print esc_html($site_detail->blogname);?></a>
         </li>
         <?php } ?>
