@@ -19,7 +19,7 @@
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(mymap);
         if (term_geo.val().length) {
-            L.marker(geo).addTo(mymap);
+            mapmarker = L.marker(geo).addTo(mymap);
         }
         mymap.on('click', function (e) {
             if (mapmarker) {
