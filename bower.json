@@ -1,0 +1,23 @@
+{
+  "name": "wp-multisite-directory",
+  "description": "",
+  "main": "admin/js/multisite-directory-admin.js",
+  "authors": [
+    "Meitar Moscovitz <meitarm@gmail.com>"
+  ],
+  "license": "GPL-3.0",
+  "homepage": "https://wordpress.org/plugins/multisite-directory/",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "leaflet": "^0.7.7"
+  }
+}

@@ -14,9 +14,9 @@
             geo = {'lat': 40.730608477796636, 'lng': -73.99017333984375};
         }
         var mymap = L.map('term-map').setView(geo, 10);
+        mymap.attributionControl.setPrefix('');
         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            maxZoom: 19
             }).addTo(mymap);
         if (term_geo.val().length) {
             mapmarker = L.marker(geo).addTo(mymap);

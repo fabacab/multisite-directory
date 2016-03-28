@@ -1,0 +1,14 @@
+{
+  "name": "wp-multisite-directory",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meitar/multisite-directory.git"
+  },
+  "config": {
+    "bower_directory": "vendor"
+  },
+  "scripts": {
+    "postinstall": "bower install"
+  }
+}

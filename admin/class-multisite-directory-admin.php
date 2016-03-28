@@ -26,11 +26,11 @@ class WP_Multisite_Directory_Admin {
         if ('edit-'.Multisite_Directory_Taxonomy::name === $screen->id) {
             wp_enqueue_style(
                 'leaflet',
-                'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css'
+                plugins_url('vendor/leaflet/dist/leaflet.css', dirname(__FILE__))
             );
             wp_enqueue_script(
                 'leaflet',
-                'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js',
+                plugins_url('vendor/leaflet/dist/leaflet.js', dirname(__FILE__)),
                 array(),
                 false,
                 true
