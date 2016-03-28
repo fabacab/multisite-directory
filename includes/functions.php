@@ -57,6 +57,38 @@ if (!function_exists('get_site_terms')) :
     }
 endif;
 
+if (!function_exists('get_sites_in_directory_by_term')) :
+    /**
+     * Retrieves the details of sites in the directory assigned the given term.
+     *
+     * @param WP_Term $term
+     * @param array $args
+     *
+     * @return array
+     */
+    function get_sites_in_directory_by_term ($term, $args = array()) {
+        $args = wp_parse_args($args, array(
+            'numberposts' => -1,
+            'tax_query' => array(
+                array(
+                    'taxonomy' => $term->taxonomy,
+                    'field' => 'id',
+                    'terms' => array($term->term_id),
+                ),
+            ),
+        ));
+        $cpt = new Multisite_Directory_Entry();
+        $posts = $cpt->get_posts($args);
+        $details = array();
+        switch_to_blog(1);
+        foreach ($posts as $post) {
+            $details[] = get_blog_details($post->{$cpt::blog_id_meta_key});
+        }
+        restore_current_blog();
+        return $details;
+    }
+endif;
+
 if (!function_exists('the_site_directory_logo')) :
     /**
      * Prints the site's custom logo or the site directory entry's featured image, if it has one.
