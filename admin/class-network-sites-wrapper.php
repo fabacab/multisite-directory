@@ -92,15 +92,7 @@ class Network_Sites_Wrapper {
                                WHERE post_type LIKE '".self::T4NS_CUSTOM_POST."'
                                AND post_name LIKE 'site-".$blog_id."'");
       if(!empty($postid)) continue;
-      $post_meta = array();
-      $post_meta['post_status'] = 'publish';
-      $post_meta['post_type'] = self::T4NS_CUSTOM_POST;
-      $post_meta['post_name'] = 'site-'.$blog_id; //this becomes unique and easy to search/retrieve
-      //get_blog_details( $fields, $getall_details )
-      $blog_details = get_blog_details($blog_id, true);
-      $post_meta['post_title'] = $blog_details->blogname;
-      //wp_insert_post ( array $postarr, bool $wp_error = false )
-      wp_insert_post ($post_meta);
+      self::add_new_site($blog_id);
     }
   }
   /*
@@ -245,9 +237,18 @@ class Network_Sites_Wrapper {
    *
    * @since    1.0.0
    * @param    int       $blog_id      new blog id
+   * @return   int  post ID on success else 0
    */
-  public function add_new_site($blog_id){
-    //TODO - crate a new post for the new blog
+  public static function add_new_site($blog_id){
+    $post_meta = array();
+    $post_meta['post_status'] = 'publish';
+		$post_meta['post_type'] = self::T4NS_CUSTOM_POST;
+		$post_meta['post_name'] = 'site-'.$blog_id; //this becomes unique and easy to search/retrieve
+		//get_blog_details( $fields, $getall_details )
+		$blog_details = get_blog_details($blog_id, true);
+		$post_meta['post_title'] = $blog_details->blogname;
+		//wp_insert_post ( array $postarr, bool $wp_error = false )
+		return wp_insert_post( $post_meta );
   }
   /*
    *function prints out a list of checkbox for each term
