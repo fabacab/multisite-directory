@@ -2,8 +2,8 @@
 Contributors: aurovrata, meitar
 Donate link: http://syllogic.in
 Tags: multisite, network, taxonomy, posts
-Requires at least: 4.4.0
-Tested up to: 4.4.2
+Requires at least: 4.4
+Tested up to: 4.5
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -56,3 +56,29 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 = Version 0.1 =
 
 * First public release.
+
+== Other notes ==
+
+This plugin provides a number of functions to Theme authors so that they can make use of the Multisite Network Directory features in their themes. This section documents those functions. For implementation details, see this plugin's `includes/functions.php` file.
+
+= get_site_directory_terms =
+
+Gets all categories in the site directory.
+
+* @return array|false|WP_Error
+
+= Get site terms =
+
+Gets the categories assigned to a given blog in the network directory.
+
+* @param int $blog_id
+* @return array|false|WP_Error
+
+= the_site_directory_logo =
+
+Prints the site's custom logo or the site directory entry's featured image, if it has one.
+
+* @param int $blog_id Optional. The ID of the site whose logo to get. Default is the current directory entry's site's logo.
+* @param string|int[] $size
+* @param string|string[] $attr
+* @return void
