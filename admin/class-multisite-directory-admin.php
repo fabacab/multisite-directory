@@ -25,7 +25,7 @@ class WP_Multisite_Directory_Admin {
             __('Site Directory Categories', 'multisite-directory'),
             __('Categories', 'multisite-directory'),
             'manage_sites',
-            '../edit-tags.php?taxonomy='.Multisite_Directory_Taxonomy::name.'&post_type='.Multisite_Directory_Subsite_Post::name
+            '../edit-tags.php?taxonomy='.Multisite_Directory_Taxonomy::name.'&post_type='.Multisite_Directory_Entry::name
             // no callback needed
         );
     }
