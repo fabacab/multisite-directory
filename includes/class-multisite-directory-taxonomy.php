@@ -64,6 +64,7 @@ class Multisite_Directory_Taxonomy {
         if (is_admin()) {
             add_action('admin_enqueue_scripts', array('WP_Multisite_Directory_Admin', 'enqueue_scripts'));
             add_action(self::name.'_add_form_fields', array($this, 'add_form_fields'));
+            add_action(self::name.'_edit_form_fields', array($this, 'edit_form_fields'));
             add_action('create_'.self::name, array($this, 'saveTermGeo'));
             add_action('edit_'.self::name, array($this, 'saveTermGeo'));
         }
@@ -86,30 +87,28 @@ class Multisite_Directory_Taxonomy {
     <input type="hidden" id="term-geo" name="geo" value="" />
     <p><?php esc_html_e('If this category relates to a physical location or area, add its geographical coordinates.' ,'multisite-directory');?></p>
 </div>
-<script>
-jQuery(document).ready(function () {
-    var term_geo = jQuery('#term-geo');
-    var button = jQuery('.term-geo-wrap a.button');
-    var mapmarker;
-    var mymap = L.map('term-map').setView({lat: 40.730608477796636, lng: -73.99017333984375}, 10);
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(mymap);
-    mymap.on('click', function (e) {
-        if (mapmarker) {
-            mymap.removeLayer(mapmarker);
-        }
-        mapmarker = L.marker(e.latlng).addTo(mymap);
-        term_geo.val(e.latlng.lat + ',' + e.latlng.lng);
-    });
-    button.on('click', function (e) {
-        e.preventDefault();
-        term_geo.val('');
-        mymap.removeLayer(mapmarker);
-    });
-});
-</script>
+<?php
+    }
+
+    /**
+     * Outputs taxonomy meta fields to the edit term form.
+     *
+     * @link https://developer.wordpress.org/reference/hooks/taxonomy_edit_form_fields/
+     *
+     * @param object $tag
+     */
+    public function edit_form_fields ($tag) {
+        $geo = get_term_meta($tag->term_id, 'geo', true);
+?>
+<tr class="form-field term-geo-wrap">
+    <th scope="row"><label for="geo"><?php esc_html_e('Location', 'multisite-directory');?></label></th>
+    <td>
+        <div id="term-map" style="height: 300px;"></div>
+        <input type="hidden" id="term-geo" name="geo" value="<?php print esc_attr($geo);?>" />
+        <p><a href="#" class="button"><?php esc_html_e('Remove location', 'multisite-directory');?></a></p>
+        <p class="description"><?php esc_html_e('If this category relates to a physical location or area, add its geographical coordinates.' ,'multisite-directory');?></p>
+    </td>
+</tr>
 <?php
     }
 

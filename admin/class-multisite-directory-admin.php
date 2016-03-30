@@ -35,6 +35,13 @@ class WP_Multisite_Directory_Admin {
                 false,
                 true
             );
+            wp_enqueue_script(
+                basename(__FILE__),
+                plugins_url('js/multisite-directory-admin.js', __FILE__),
+                array('leaflet'),
+                false,
+                true
+            );
         }
     }
 
