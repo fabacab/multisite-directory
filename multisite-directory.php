@@ -36,11 +36,14 @@ class WP_Multisite_Directory {
         require_once 'includes/class-multisite-directory-taxonomy.php';
         require_once 'includes/class-multisite-directory-entry.php';
         require_once 'includes/class-multisite-directory-widget.php';
+        require_once 'includes/class-multisite-directory-shortcode.php';
         require_once 'includes/functions.php';
         require_once 'admin/class-multisite-directory-admin.php';
 
         add_action('init', array(__CLASS__, 'initialize'));
         add_action('widgets_init', array(__CLASS__, 'widgets_initialize'));
+        add_action('wp_enqueue_scripts', array(__CLASS__, 'register_scripts'));
+
         add_action('wpmu_new_blog', array(__CLASS__, 'wpmu_new_blog'));
         add_action('network_admin_menu', array('WP_Multisite_Directory_Admin', 'network_admin_menu'));
         add_action('signup_blogform', array(__CLASS__, 'signup_blogform'));
@@ -62,6 +65,8 @@ class WP_Multisite_Directory {
 
         $cpt = new Multisite_Directory_Entry();
         $cpt->register();
+
+        Multisite_Directory_Shortcode::register();
     }
 
     /**
@@ -73,6 +78,25 @@ class WP_Multisite_Directory {
      */
     public static function widgets_initialize () {
         register_widget('Multisite_Directory_Widget');
+    }
+
+    /**
+     * Loads plugin-wide scripts and styles.
+     *
+     * @link https://developer.wordpress.org/reference/hooks/wp_enqueue_scripts/
+     */
+    public static function register_scripts () {
+        wp_register_style(
+            'leaflet',
+            plugins_url('vendor/leaflet/dist/leaflet.css', __FILE__)
+        );
+        wp_register_script(
+            'leaflet',
+            plugins_url('vendor/leaflet/dist/leaflet.js', __FILE__),
+            array(),
+            false,
+            true
+        );
     }
 
     /**

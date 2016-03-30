@@ -24,17 +24,6 @@ class WP_Multisite_Directory_Admin {
     public static function enqueue_scripts ($hook_suffix) {
         $screen = get_current_screen();
         if ('edit-'.Multisite_Directory_Taxonomy::name === $screen->id) {
-            wp_enqueue_style(
-                'leaflet',
-                plugins_url('vendor/leaflet/dist/leaflet.css', dirname(__FILE__))
-            );
-            wp_enqueue_script(
-                'leaflet',
-                plugins_url('vendor/leaflet/dist/leaflet.js', dirname(__FILE__)),
-                array(),
-                false,
-                true
-            );
             wp_enqueue_script(
                 basename(__FILE__),
                 plugins_url('js/multisite-directory-admin.js', __FILE__),

@@ -17,7 +17,7 @@
         mymap.attributionControl.setPrefix('');
         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19
-            }).addTo(mymap);
+        }).addTo(mymap);
         if (term_geo.val().length) {
             mapmarker = L.marker(geo).addTo(mymap);
         }
