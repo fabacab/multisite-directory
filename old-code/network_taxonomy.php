@@ -23,17 +23,17 @@ require('include/t4ns_functions.php');
  * Actions
  */
 
-add_action('plugins_loaded', 't4ns_plugin_init'); //translation
-add_action('network_admin_menu', 't4ns_admin_menu');
-register_activation_hook( __FILE__, 't4ns_plugin_activate' );
-register_deactivation_hook( __FILE__, 't4ns_plugin_deactivate' );
+add_action('plugins_loaded', 't4ns_plugin_init'); //translation DONE
+add_action('network_admin_menu', 't4ns_admin_menu');//DONE
+register_activation_hook( __FILE__, 't4ns_plugin_activate' );//DONE
+register_deactivation_hook( __FILE__, 't4ns_plugin_deactivate' );//DONE
 
 add_action('admin_footer-site-new.php','t4ns_wp_site_new'); //add new site form injection
-add_action( 'wpmu_new_blog', 't4ns_insert_site_terms' );
+add_action( 'wpmu_new_blog', 't4ns_insert_site_terms' ); //DONE
 
-add_filter('wpmu_blogs_columns', 't4ns_register_sites_column'); //add extra column to sites table
-add_filter('manage_sites-network_sortable_columns', 't4ns_register_sortable_column');	
-add_filter('manage_sites_custom_column', 't4ns_blog_term_field', 10, 2);
+add_filter('wpmu_blogs_columns', 't4ns_register_sites_column'); //add extra column to sites table DONE
+add_filter('manage_sites-network_sortable_columns', 't4ns_register_sortable_column');	//DONE
+add_filter('manage_sites_custom_column', 't4ns_blog_term_field', 10, 2); //DONE
 
 add_action('admin_footer-sites.php','t4ns_wp_site_list'); //inject quick-edit code into sites table
 

@@ -80,10 +80,6 @@ class Taxonomy_For_Network_Sites {
 	/**
 	 * Load the required constants for this plugin.
 	 *
-	 * Include the following constants:
-	 *
-	 * - T4NS_TAXONOMY - the name of the registered category used for sites
-	 * - T4NS_CUSTOM_POST - the custom post used to store site meta
 	 * 
 	 * @since    1.0.0
 	 * @access   private
@@ -91,11 +87,6 @@ class Taxonomy_For_Network_Sites {
 	private function define_constants(){
 		$this->plugin_name = 'taxonomy-for-network-sites';
 		$this->version = '1.0.0';
-		//views used for the DB
-		if (!defined('T4NS_TAXONOMY'))
-			define('T4NS_TAXONOMY', 't4ns_category');
-		if (!defined('T4NS_CUSTOM_POST'))
-			define('T4NS_CUSTOM_POST', 't4ns_post');
 	}
 
 	/**
@@ -171,14 +162,26 @@ class Taxonomy_For_Network_Sites {
 
 		$plugin_admin = new Taxonomy_For_Network_Sites_Admin( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts',                 $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts',                 $plugin_admin, 'enqueue_scripts' );
 		
 		//submenu for Network dashboard menu Sites
-		$this->loader->add_action( 'network_admin_menu', $plugin_admin, 'add_category_submenu_to_sites' );
-		//resgister our custom taxnonmy/post
-		$this->loader->add_action( 'init', $plugin_admin, 'regsiter_custom_taxonomy');
-		$this->loader->add_action( 'init', $plugin_admin, 'regsiter_custom_post');
+		$this->loader->add_action( 'network_admin_menu',                    $plugin_admin, 'add_category_submenu_to_sites' );
+		//resgister our custom taxnonmy/post, this is not needed at this point since we have done this at activation time
+		//$this->loader->add_action( 'init', $plugin_admin, 'regsiter_custom_post_and_taxononmy');
+		
+		//add cloumns to network dashboard sites table, and make it sortable
+		$this->loader->add_action( 'wpmu_blogs_columns',                    $plugin_admin, 'sites_table_category_column');
+		$this->loader->add_action( 'manage_sites-network_sortable_columns', $plugin_admin, 'sites_table_category_sortable_column');
+		$this->loader->add_action( 'manage_sites_custom_column',            $plugin_admin, 'populate_sites_table_category_column',10, 2);
+		
+		//new blog creation
+		$this->loader->add_action( 'wpmu_new_blog',                         $plugin_admin, 'add_new_blog');
+		
+		//manage terms in sites tables
+		$this->loader->add_action( 'admin_footer-sites.php',                $plugin_admin, 'add_quick_edit_sites');
+		//ajax save site terms
+		$this->loader->add_action( 'wp_ajax_t4ns_update_site_terms',        $plugin_admin, 'ajax_save_site_terms');
 	}
 
 	/**
@@ -236,5 +239,4 @@ class Taxonomy_For_Network_Sites {
 	public function get_version() {
 		return $this->version;
 	}
-
 }
