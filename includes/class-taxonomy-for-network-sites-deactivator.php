@@ -29,7 +29,8 @@ class Taxonomy_For_Network_Sites_Deactivator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function deactivate() {
+	public static function deactivate($networkwide) {
+    //TODO: do we delete the custom post-type and custom taxonomy when the plugin is uninstalled?
 
 	}
 
