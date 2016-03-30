@@ -108,7 +108,23 @@ class Taxonomy_For_Network_Sites_Admin {
 	 */
 	public function add_category_submenu_to_sites(){
 		//add_submenu_page ( string $parent_slug, string $page_title, string $menu_title, string $capability, string $menu_slug, callable $function = '' )
-		add_submenu_page( 'sites.php', 'Site Categories', 'Categories', 'manage_sites', 'edit-tags.php?taxonomy='.T4NS_TAXONOMY.'&post_type='.T4NS_CUSTOM_POST, '' );
+		//option 1
+		add_submenu_page( 'sites.php', 'Site Categories', 'Categories', 'manage_sites', '../edit-tags.php?taxonomy='.T4NS_TAXONOMY.'&post_type='.T4NS_CUSTOM_POST, '' );
+		//option 2 (manually copy the edit-tags.php file from wp-admin to wp-admin/network)
+		//add_submenu_page( 'sites.php', 'Site Categories', 'Categories', 'manage_sites', 'edit-tags.php?taxonomy='.T4NS_TAXONOMY.'&post_type='.T4NS_CUSTOM_POST, '' );
+		//option 3
+		//add_submenu_page( 'sites.php', 'Site Categories', 'Categories', 'manage_sites', 'edit-site-categories', 'manage_sites_categories' );
+	}
+	
+	/*
+	 * Display site categories edit page in the dashboard
+	 * 
+	 * This is a callback function form the add_submenu_page function.
+	 *
+	 * @since 1.0.0
+	 */
+	public function manage_sites_categories(){
+		require(dirname( __FILE__ )  . 'admin/edit_site_taxonomy.php');
 	}
 	
 	/**
