@@ -87,6 +87,10 @@ class WP_Multisite_Directory {
      * @param bool $network_wide
      */
     public static function activate ($network_wide) {
+        if (!is_multisite()) {
+            deactivate_plugins(plugin_basename(__FILE__));
+        }
+
         self::initialize();
 
         $plugin = new self();

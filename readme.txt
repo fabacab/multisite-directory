@@ -30,13 +30,18 @@ To manually install Multisite Directory:
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= How do I customize the directory? =
 
-An answer to that question.
+Edit your theme's templates! :) This plugin makes no assumptions about the look-and-feel of your directory so that any theme that wants to can customize it. You only need to customize your theme if you want to change the default appearance.
 
-= What about foo bar? =
+As a Theme author, you will probably want to create at least two new files:
 
-Answer to foo bar dilemma.
+* `archive-network_directory.php`
+* `taxonomy-subsite_category.php`
+
+The `archive-*` page is the main directory page. It will list all the sites in your multisite network. The `taxonomy-*.php` page will list a subset of the sites in your network based on their categorization. You can customize these files as you would any other theme file.
+
+If you do not create these files, then the [default WordPress template hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/) will take over, meaning that either the `archive.php` or `index.php` template file in your main site's currently active theme will be used to display the network directory itself and one of `taxonomy.php` or `index.php` will be used to display a filtered view of your directory's categories.
 
 == Screenshots ==
 
