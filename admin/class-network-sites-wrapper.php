@@ -219,7 +219,25 @@ class Network_Sites_Wrapper {
    * @return   array     an array of terms with term_id=>term_title key/value pairs
    */
   public function get_site_terms($blog_id){
-    //TODO, retrieve given $blog_id's t4ns_post type, and return array of t4ns_category terms associated with the post
+    $terms = array();
+		$posts = get_posts(array(
+            'name' => 'site-'.$blog_id,
+            'posts_per_page' => 1,
+            'post_type' => self::T4NS_CUSTOM_POST,
+            'post_status' => 'publish'
+    ));
+    
+    if( $posts ) {
+			//get_the_terms ( int|object $post, string $taxonomy )
+			$terms_obj = get_the_terms ( $posts[0], self::T4NS_TAXONOMY );
+			if($terms_obj){
+				foreach($terms_obj as $term){
+					$terms[$term->term_id] = $term->name;
+				}
+			}
+		}else error_log("TAXONOMY 4 NETWORK SITES: Error, unable to retrieve wrapper post for blog_id=".$blog_id);
+		
+		return $terms;
   }
   
   /*
@@ -240,8 +258,8 @@ class Network_Sites_Wrapper {
    * @return   int  post ID on success else 0
    */
   public static function add_new_site($blog_id){
-    $post_meta = array();
-    $post_meta['post_status'] = 'publish';
+		$post_meta = array();
+		$post_meta['post_status'] = 'publish';
 		$post_meta['post_type'] = self::T4NS_CUSTOM_POST;
 		$post_meta['post_name'] = 'site-'.$blog_id; //this becomes unique and easy to search/retrieve
 		//get_blog_details( $fields, $getall_details )
@@ -263,13 +281,17 @@ class Network_Sites_Wrapper {
    */
   
   public static function terms_check_list($parent,$level=0){
-    $terms = array(); //get terms
-    
-    if(!$terms) return;
+		//get_term_children( $term, $taxonomy )
+		switch_to_blog(1);
+    $terms = get_terms( self::T4NS_TAXONOMY,
+											 array('parent'=>$parent,
+															'hide_empty' => 0
+											)); //get terms
+    if(is_wp_error($terms)) return;
     
     if($level>0) echo '<ul class="children" style="margin-left:18px;">';
     foreach($terms as $term){
-        ?>
+			  ?>
         <li class="sterm-<?php echo $term->term_id;?>">
             <label class="selectit"><input value="<?php echo $term->term_id;?>" name="st_site_terms[]" class="in-sterm-<?php echo $term->term_id;?>" type="checkbox"><?php echo $term->name;?></label>
         <?php self::terms_check_list($term->term_id,$level+1);?>
@@ -277,6 +299,29 @@ class Network_Sites_Wrapper {
         <?php
     }
     if($level>0) echo '</ul>';
+		restore_current_blog();
   }
+	/*
+	 * Function to retrieve the parent sites.
+	 *
+	 * @since    1.0.0
+   * @param    int   $blog_id  child id whose parents you want to look up
+   * @return   array  an array of blog ids which represent this site's parents.
+	 */
+	public function get_parents_site($blog_id){
+		//TODO retrieve an array of blog_ids of parents of a site. FInd the blog_id's terms, then find the terms parents.
+		//Look up wrapper post sites which have this term, return their blog_ids
+	}
+	/*
+	 * Function to retrieve the child sites.
+	 *
+	 * @since    1.0.0
+   * @param    int   $blog_id  parent id whose children site you want to look up
+   * @return   array  an array of blog ids which represent this site's children.
+	 */
+	public function get_children_site($blog_id){
+		//TODO retrieve an array of blog_ids of children sites of a site. Find the blog_id's terms, then find each terms children.
+		//Look up wrapper post sites which have these children term, return their blog_ids
+	}
 }
   
