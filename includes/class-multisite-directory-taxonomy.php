@@ -43,7 +43,7 @@ class Multisite_Directory_Taxonomy {
      * Registers the taxonomy.
      */
     public function register () {
-        register_taxonomy(self::name, Multisite_Directory_Subsite_Post::name, array(
+        register_taxonomy(self::name, Multisite_Directory_Entry::name, array(
             'hierarchical' => true,
             'capabilities' => $this->capabilities,
         ));

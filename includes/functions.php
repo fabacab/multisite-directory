@@ -1,20 +1,26 @@
 <?php
 /**
+ * Convenience functions and templating wrappers.
  *
+ * @license https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ * @copyright Copyright (c) 2016 TK-TODO
+ *
+ * @package WordPress\Plugin\Multisite_Directory
  */
 
-/**
- * Gets the categories in the network directory of a given blog.
- *
- * @param int $blog_id
- *
- * @uses get_the_terms()
- *
- * @return array|false|WP_Error
- */
 if (!function_exists('get_site_terms')) :
+    /**
+     * Gets the categories in the network directory of a given blog.
+     *
+     * @param int $blog_id
+     *
+     * @uses get_the_terms()
+     *
+     * @return array|false|WP_Error
+     */
     function get_site_terms ($blog_id) {
-        $cpt = new Multisite_Directory_Subsite_Post();
+        $cpt = new Multisite_Directory_Entry();
         switch_to_blog(1);
         $posts = $cpt->get_posts(array(
             'meta_key'  => $cpt::blog_id_meta_key,
