@@ -9,6 +9,24 @@
  * @package WordPress\Plugin\Multisite_Directory
  */
 
+if (!function_exists('get_site_directory_terms')) :
+    /**
+     * Gets all categories in the site directory.
+     *
+     * @uses get_terms()
+     *
+     * @return array|false|WP_Error
+     */
+    function get_site_directory_terms () {
+        switch_to_blog(1);
+        $terms = get_terms(Multisite_Directory_Taxonomy::name, array(
+            'hide_empty' => false,
+        ));
+        restore_current_blog();
+        return $terms;
+    }
+endif;
+
 if (!function_exists('get_site_terms')) :
     /**
      * Gets the categories in the network directory of a given blog.
