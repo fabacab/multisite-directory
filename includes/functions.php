@@ -27,6 +27,27 @@ if (!function_exists('get_site_directory_terms')) :
     }
 endif;
 
+if (!function_exists('get_site_directory_location_terms')) :
+    /**
+     * Gets all categories in the site directory that have location metadata.
+     *
+     * @return array|false|WP_Error
+     */
+    function get_site_directory_location_terms () {
+        switch_to_blog(1);
+        $terms = get_terms(Multisite_Directory_Taxonomy::name, array(
+            'hide_empty' => false,
+            'meta_query' => array(
+                array(
+                    'key' => 'geo',
+                )
+            ),
+        ));
+        restore_current_blog();
+        return $terms;
+    }
+endif;
+
 if (!function_exists('get_site_terms')) :
     /**
      * Gets the categories assigned to a given blog in the network directory.
@@ -89,9 +110,9 @@ if (!function_exists('get_sites_in_directory_by_term')) :
     }
 endif;
 
-if (!function_exists('the_site_directory_logo')) :
+if (!function_exists('get_site_directory_logo')) :
     /**
-     * Prints the site's custom logo or the site directory entry's featured image, if it has one.
+     * Gets HTML for the site's custom logo or the site directory entry's featured image, if it has one.
      *
      * @uses get_the_post_thumbnail()
      *
@@ -99,9 +120,9 @@ if (!function_exists('the_site_directory_logo')) :
      * @param string|int[] $size
      * @param string|string[] $attr
      *
-     * @return void
+     * @return string
      */
-    function the_site_directory_logo ($blog_id = 0, $size = 'post-thumbnail', $attr = '') {
+    function get_site_directory_logo ($blog_id, $size = 'post-thumbnail', $attr = '') {
         $cpt = new Multisite_Directory_Entry();
         if (!$blog_id) {
             global $post;
@@ -119,20 +140,37 @@ if (!function_exists('the_site_directory_logo')) :
 
         if (empty($html) && function_exists('the_custom_logo')) {
             // No post thumbnail, so use the site's custom logo.
-            the_custom_logo($blog_id);
+            return get_custom_logo($blog_id);
         } else {
-            print $html;
+            return $html;
         }
     }
 endif;
 
-if (!function_exists('the_site_permalink')) :
+if (!function_exists('the_site_directory_logo')) :
     /**
-     * Prints the URL of the site.
+     * Prints the site's custom logo or the site directory entry's featured image, if it has one.
+     *
+     * @uses get_the_post_thumbnail()
      *
      * @param int $blog_id Optional. The ID of the site whose logo to get. Default is the blog ID of the current directory entry.
+     * @param string|int[] $size
+     * @param string|string[] $attr
+     *
+     * @return void
      */
-    function the_site_permalink ($blog_id = 0) {
+    function the_site_directory_logo ($blog_id = 0, $size = 'post-thumbnail', $attr = '') {
+        print get_site_directory_logo($blog_id, $size, $attr);
+    }
+endif;
+
+if (!function_exists('get_site_permalink')) :
+    /**
+     * Gets the URL of the site.
+     *
+     * @param int $blog_id Optional. The ID of the site in question. Default is the blog ID of the current directory entry.
+     */
+    function get_site_permalink ($blog_id = 0) {
         $cpt = new Multisite_Directory_Entry();
         if (!$blog_id) {
             global $post;
@@ -140,6 +178,18 @@ if (!function_exists('the_site_permalink')) :
         }
 
         $blog_details = get_blog_details($blog_id);
-        print $blog_details->siteurl;
+
+        return $blog_details->siteurl;
+    }
+endif;
+
+if (!function_exists('the_site_permalink')) :
+    /**
+     * Prints the URL of the site.
+     *
+     * @param int $blog_id Optional. The ID of the site in question. Default is the blog ID of the current directory entry.
+     */
+    function the_site_permalink ($blog_id = 0) {
+        print get_site_permalink($blog_id);
     }
 endif;

@@ -36,22 +36,35 @@ class Multisite_Directory_Widget extends WP_Widget {
     public function form ($instance) {
         $instance = wp_parse_args($instance, array(
             // Widget defaults.
-            'only_locations' => 0,
+            'display' => 'list',
             'show_site_logo' => 1,
-            'site_logo_size' => 'post-thumbnail',
+            'logo_size' => 'post-thumbnail',
         ));
 ?>
-<p>
-    <input type="checkbox"
-        id="<?php print $this->get_field_id('only_locations');?>"
-        name="<?php print $this->get_field_name('only_locations')?>"
-        value="1"
-        <?php checked($instance['only_locations']);?>
-    />
-    <label for="<?php print $this->get_field_id('only_locations');?>">
-        <?php esc_html_e('Limit to locations', 'multisite-directory');?>
-    </label>
-</p>
+<ul>
+    <li>
+        <input type="radio"
+            id="<?php print $this->get_field_id('display_as_list');?>"
+            name="<?php print $this->get_field_name('display')?>"
+            value="list"
+            <?php checked($instance['display'], 'list');?>
+        />
+        <label for="<?php print $this->get_field_id('display_as_list');?>">
+            <?php esc_html_e('Display as list', 'multisite-directory');?>
+        </label>
+    </li>
+    <li>
+        <input type="radio"
+            id="<?php print $this->get_field_id('display_as_map');?>"
+            name="<?php print $this->get_field_name('display')?>"
+            value="map"
+            <?php checked($instance['display'], 'map');?>
+        />
+        <label for="<?php print $this->get_field_id('display_as_map');?>">
+            <?php esc_html_e('Display as map', 'multisite-directory');?>
+        </label>
+    </li>
+</ul>
 <p>
     <input type="checkbox"
         id="<?php print $this->get_field_id('show_site_logo');?>"
@@ -62,18 +75,18 @@ class Multisite_Directory_Widget extends WP_Widget {
     <label for="<?php print $this->get_field_id('show_site_logo');?>">
         <?php esc_html_e('Show site logos', 'multisite-directory');?>
     </label>
-    <label for="<?php print $this->get_field_id('site_logo_size');?>">
+    <label for="<?php print $this->get_field_id('logo_size');?>">
         <?php
         /* translators: Part of the logo size widget, like "Show site logo at size: " */
         esc_html_e('at size', 'multisite-directory');
         ?>
     </label>
     <select
-        id="<?php print $this->get_field_id('site_logo_size');?>"
-        name="<?php print $this->get_field_name('site_logo_size');?>"
+        id="<?php print $this->get_field_id('logo_size');?>"
+        name="<?php print $this->get_field_name('logo_size');?>"
     >
         <?php foreach (get_intermediate_image_sizes() as $size) { if (has_image_size($size)) : ?>
-        <option <?php selected($instance['site_logo_size'], $size);?>><?php print esc_html($size);?></option>
+        <option <?php selected($instance['logo_size'], $size);?>><?php print esc_html($size);?></option>
         <?php endif; } ?>
     </select>
 </p>
@@ -93,9 +106,9 @@ class Multisite_Directory_Widget extends WP_Widget {
     public function update ($new_instance, $old_instance) {
         $instance = array();
 
-        $instance['only_locations'] = (int) $new_instance['only_locations'];
+        $instance['display'] = sanitize_text_field($new_instance['display']);
         $instance['show_site_logo'] = (int) $new_instance['show_site_logo'];
-        $instance['site_logo_size'] = (has_image_size($new_instance['site_logo_size'])) ? $new_instance['site_logo_size'] : 0;
+        $instance['logo_size'] = (has_image_size($new_instance['logo_size'])) ? $new_instance['logo_size'] : 0;
 
         return $instance;
     }
@@ -111,39 +124,13 @@ class Multisite_Directory_Widget extends WP_Widget {
      * @return void
      */
     public function widget ($args, $instance) {
-        $terms = get_site_terms(get_current_blog_id());
-        if (!is_wp_error($terms) && !empty($terms)) {
-
-            // The "only locations" option filters categories to ones
-            // that have a geographical coordinate associated with it.
-            if (!empty($instance['only_locations'])) {
-                switch_to_blog(1);
-                foreach ($terms as $k => $v) {
-                    if (!get_term_meta($v->term_id, 'geo', true)) {
-                        unset($terms[$k]);
-                    }
-                }
-                restore_current_blog();
+        $atts = '';
+        foreach ($instance as $k => $v) {
+            if ($v) {
+                $atts .= "$k='$v' ";
             }
-
-?>
-<h1><?php esc_html_e('Similar sites', 'multisite-directory');?></h1>
-<ul class="network-directory-similar-sites">
-    <?php foreach ($terms as $term) { $similar_sites = get_sites_in_directory_by_term($term); ?>
-    <li><?php print esc_html($term->name); ?>
-        <ul>
-        <?php foreach ($similar_sites as $site_detail) { if (get_current_blog_id() == $site_detail->blog_id) { continue; } ?>
-        <li>
-            <?php if (!empty($instance['show_site_logo'])) { the_site_directory_logo($site_detail->blog_id, $instance['site_logo_size']); } ?>
-            <a href="<?php print esc_url($site_detail->siteurl);?>"><?php print esc_html($site_detail->blogname);?></a>
-        </li>
-        <?php } ?>
-        </ul>
-    </li>
-    <?php } ?>
-</ul>
-<?php
         }
+        print do_shortcode('['.Multisite_Directory_Shortcode::tagname." $atts]");
     }
 
 }
