@@ -4,7 +4,7 @@ Donate link: http://syllogic.in
 Tags: multisite, network, taxonomy, posts
 Requires at least: 4.4
 Tested up to: 4.5
-Stable tag: trunk
+Stable tag: 0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,11 +12,24 @@ Add a browseable, flexible directory of the sites in a WP Multisite network. Eac
 
 == Description ==
 
-Multisite Directory provides a customizable Network-wide site directory for WordPress Multisite installations from the Network's main site. You can categorize subsites in your Network, add full-length descriptions and featured images to them, and more. Theme developers can customize the look and feel of the site directory using all the tools they're already familiar with.
+Multisite Directory provides a customizable Network-wide site directory for WordPress Multisite installations. You can categorize subsites in your Network, add full-length descriptions and featured images to them, and more. Theme developers can customize the look and feel of the site directory using all the tools they're already familiar with. Blog authors can use a highly-configurable shortcode (`[site-directory]`) to display 
 
-Each time a new site or blog is added to your Network, a corresponding entry in the site directory is added, too.
+Each time a new site or blog is added to your Network, a corresponding entry in the site directory is added, too. The directory is managed from the Network's main site, but most changes to the subsites (other blogs) automatically update the directory. Many parts of a given site's appearance in the directory can be modified without affecting the site itself. This means a Super Admin can use a custom site logo, tagline, and so on in the directory itself, without changing the site's *actual* logo, tagline, and so on.
 
-Site directory entries are implemented as a hierarchical custom post type in the main site. These pages can be categorized with a custom "subsite category" taxonomy. This combination allows maximum flexibility while providing the tightest integration with existing WordPress core features, without any custom tables or unexpected side effects.
+Site directory entries are implemented as a hierarchical custom post type in the main site. These pages can be categorized with a custom `subsite_category` taxonomy. We've found that this combination allows maximum flexibility while providing the tightest integration with existing WordPress core features. As a result, no new tables are added to your install, and no side effects are introduced. It Just Works.(TM)
+
+**Quickstart guide**
+
+After [installing](https://wordpress.org/plugins/multisite-directory/installation/) the plugin, you'll want to:
+
+1. As a Super Admin, go to My Sites &rarr; Network Admin &rarr Sites. Notice the new "Categories" link on the sidebar.
+1. Create some categories! If the category relates to a location (maybe it's a site for a regional chapter of your organization?), be sure to click the map to geotag it.
+1. Click on "Sites," immediately above "Categories." These pages are the individual directory entries, *not* the blogs. Categorize these pages as you would regular WordPress Pages to organize your Site Directory.
+1. Go any site's Appearance &rarr; Widgets screen, and add a "Network Directory Widget" to a widget area.
+1. If you've geotagged some of your Site Categories, choose "Display as list" from the widget options. (Otherwise, leave it on "Display as list.")
+1. Click *Save*, view your blog, and enjoy your new Site Directory!
+
+Check out the [Screenshots](https://wordpress.org/plugins/multisite-directory/screenshots/) for a few examples.
 
 == Installation ==
 
@@ -45,11 +58,13 @@ If you do not create these files, then the [default WordPress template hierarchy
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Multisite Directory adds a "Categories" entry to your Sites menu so you can organize your sites using the familiar Category interface.
+
+2. Site categories include geotagging capabilities out-of-the-box, so you can easily group your sites by geographic region.
+
+3. The plugin includes a Network Directory Widget as well as a shortcode (`[site-directory]`) that make it easy to publish a simple Multisite Network Directory in a post, page, or widget area.
+
+4. When users create new sites, they can categorize their blog under the scheme you created. Once their site is created, however, the Super Admin can always re-categorize the new site at will.
 
 == Changelog ==
 
