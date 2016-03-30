@@ -21,7 +21,7 @@ class Multisite_Directory_Widget extends WP_Widget {
             strtolower(__CLASS__),
             __('Network Directory Widget', 'multisite-directory'),
             array(
-                'description' => __('Shows a portion of the Sites from the Network Directory.', 'multisite-directory')
+                'description' => __('Shows similarly-categorized Sites from the Network Directory.', 'multisite-directory')
             )
         );
     }
@@ -34,6 +34,35 @@ class Multisite_Directory_Widget extends WP_Widget {
      * @return string
      */
     public function form ($instance) {
+        $instance = wp_parse_args($instance, array(
+            // Widget defaults.
+            'only_locations' => 0,
+            'show_site_logo'  => 1,
+        ));
+?>
+<p>
+    <input type="checkbox"
+        id="<?php print $this->get_field_id('only_locations');?>"
+        name="<?php print $this->get_field_name('only_locations')?>"
+        value="1"
+        <?php checked($instance['only_locations']);?>
+    />
+    <label for="<?php print $this->get_field_id('only_locations');?>">
+        <?php esc_html_e('Limit to locations', 'multisite-directory');?>
+    </label>
+</p>
+<p>
+    <input type="checkbox"
+        id="<?php print $this->get_field_id('show_site_logo');?>"
+        name="<?php print $this->get_field_name('show_site_logo')?>"
+        value="1"
+        <?php checked($instance['show_site_logo']);?>
+    />
+    <label for="<?php print $this->get_field_id('show_site_logo');?>">
+        <?php esc_html_e('Show site logos', 'multisite-directory');?>
+    </label>
+</p>
+<?php
     }
 
     /**
@@ -47,6 +76,12 @@ class Multisite_Directory_Widget extends WP_Widget {
      * @return array|bool Settings to save or bool false to cancel saving.
      */
     public function update ($new_instance, $old_instance) {
+        $instance = array();
+
+        $instance['only_locations'] = (int) $new_instance['only_locations'];
+        $instance['show_site_logo'] = (int) $new_instance['show_site_logo'];
+
+        return $instance;
     }
 
     /**
@@ -62,6 +97,19 @@ class Multisite_Directory_Widget extends WP_Widget {
     public function widget ($args, $instance) {
         $terms = get_site_terms(get_current_blog_id());
         if (!is_wp_error($terms) && !empty($terms)) {
+
+            // The "only locations" option filters categories to ones
+            // that have a geographical coordinate associated with it.
+            if (!empty($instance['only_locations'])) {
+                switch_to_blog(1);
+                foreach ($terms as $k => $v) {
+                    if (!get_term_meta($v->term_id, 'geo', true)) {
+                        unset($terms[$k]);
+                    }
+                }
+                restore_current_blog();
+            }
+
 ?>
 <h1><?php esc_html_e('Similar sites', 'multisite-directory');?></h1>
 <ul class="network-directory-similar-sites">
@@ -70,6 +118,7 @@ class Multisite_Directory_Widget extends WP_Widget {
         <ul>
         <?php foreach ($similar_sites as $site_detail) { if (get_current_blog_id() == $site_detail->blog_id) { continue; } ?>
         <li>
+            <?php if (!empty($instance['show_site_logo'])) { the_site_directory_logo($site_detail->blog_id); } ?>
             <a href="<?php print esc_url($site_detail->siteurl);?>"><?php print esc_html($site_detail->blogname);?></a>
         </li>
         <?php } ?>
