@@ -52,6 +52,7 @@ class Taxonomy_For_Network_Sites_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		$this->load_dependencies();
 		$this->sites_wrapper = new Network_Sites_Wrapper( $plugin_name, $version );
 
 	}
@@ -244,7 +245,7 @@ function add_quick_edit_sites(){
     <tr id="edit-site" class="alternative-row-temp inline-edit-row quick-edit-row inline-editor hide-row">
         <td colspan="5" class="all-columns">
             <ul>
-            <?php Network_Sites_Wrapper::terms_check_list(0,$taxonomy,0);?>
+            <?php Network_Sites_Wrapper::terms_check_list(0,0);?>
             </ul>
             <p>
                 <a accesskey="c" href="#inline-edit" class="button-secondary cancel alignleft">Cancel</a>
