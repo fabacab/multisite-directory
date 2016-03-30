@@ -42,6 +42,7 @@ class WP_Multisite_Directory {
 
         add_action('init', array(__CLASS__, 'initialize'));
         add_action('widgets_init', array(__CLASS__, 'widgets_initialize'));
+        add_action('admin_enqueue_scripts', array(__CLASS__, 'register_scripts'));
         add_action('wp_enqueue_scripts', array(__CLASS__, 'register_scripts'));
 
         add_action('wpmu_new_blog', array(__CLASS__, 'wpmu_new_blog'));
