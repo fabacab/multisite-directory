@@ -167,8 +167,8 @@ class Taxonomy_For_Network_Sites {
 		
 		//submenu for Network dashboard menu Sites
 		$this->loader->add_action( 'network_admin_menu',                    $plugin_admin, 'add_category_submenu_to_sites' );
-		//resgister our custom taxnonmy/post, this is not needed at this point since we have done this at activation time
-		//$this->loader->add_action( 'init', $plugin_admin, 'regsiter_custom_post_and_taxononmy');
+		//resgister our custom taxnonmy/post
+		$this->loader->add_action( 'init',                                  $plugin_admin, 'regsiter_custom_post_and_taxononmy');
 		
 		//add cloumns to network dashboard sites table, and make it sortable
 		$this->loader->add_action( 'wpmu_blogs_columns',                    $plugin_admin, 'sites_table_category_column');
