@@ -68,6 +68,10 @@ If you do not create these files, then the [default WordPress template hierarchy
 
 == Changelog ==
 
+= Version 0.1.2 =
+
+* Bugfix: "Remove location" button on taxonomy edit screen correctly deletes term geolocation metadata.
+
 = Version 0.1.1 =
 
 * [Bugfix](https://wordpress.org/support/topic/problem-with-shortcode-on-page): Fix PHP warning when no attributes are passed to the shortcode.
