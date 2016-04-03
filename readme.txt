@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=TJLPJ
 Tags: multisite, network, taxonomy, posts
 Requires at least: 4.4
 Tested up to: 4.5
-Stable tag: 0.1
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,10 @@ If you do not create these files, then the [default WordPress template hierarchy
 4. When users create new sites, they can categorize their blog under the scheme you created. Once their site is created, however, the Super Admin can always re-categorize the new site at will.
 
 == Changelog ==
+
+= Version 0.1.1 =
+
+* [Bugfix](https://wordpress.org/support/topic/problem-with-shortcode-on-page): Fix PHP warning when no attributes are passed to the shortcode.
 
 = Version 0.1 =
 
