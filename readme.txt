@@ -12,7 +12,7 @@ Add a browseable, flexible directory of the sites in a WP Multisite network. Eac
 
 == Description ==
 
-Multisite Directory provides a customizable Network-wide site directory for WordPress Multisite installations. You can categorize subsites in your Network, add full-length descriptions and featured images to them, and more. Theme developers can customize the look and feel of the site directory using all the tools they're already familiar with. Blog authors can use a highly-configurable shortcode (`[site-directory]`) to display 
+Multisite Directory provides a customizable Network-wide site directory for WordPress Multisite installations. You can categorize subsites in your Network, add full-length descriptions and featured images to them, and more. Theme developers can customize the look and feel of the site directory using all the tools they're already familiar with. Blog authors can use a highly-configurable shortcode (`[site-directory]`) to display the directory anywhere shortcodes are supported.
 
 Each time a new site or blog is added to your Network, a corresponding entry in the site directory is added, too. The directory is managed from the Network's main site, but most changes to the subsites (other blogs) automatically update the directory. Many parts of a given site's appearance in the directory can be modified without affecting the site itself. This means a Super Admin can use a custom site logo, tagline, and so on in the directory itself, without changing the site's *actual* logo, tagline, and so on.
 
