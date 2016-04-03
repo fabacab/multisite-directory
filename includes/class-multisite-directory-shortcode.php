@@ -299,6 +299,9 @@ class Multisite_Directory_Shortcode {
      */
     public static function doShortcode ($atts, $content = null) {
         self::$invocations++;
+        if (!is_multisite()) {
+            return;
+        }
         $shortcode = new self($atts, $content);
         $shortcode->prepare();
         $shortcode->display();
