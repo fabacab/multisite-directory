@@ -11,7 +11,7 @@
 
             var map = L.map(this).setView({'lat': 40.730608477796636, 'lng': -73.99017333984375}, 10);
             map.attributionControl.setPrefix('');
-            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 'maxZoom': 19
             }).addTo(map);
 

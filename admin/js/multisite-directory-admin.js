@@ -15,7 +15,7 @@
         }
         var mymap = L.map('term-map').setView(geo, 10);
         mymap.attributionControl.setPrefix('');
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19
         }).addTo(mymap);
         if (term_geo.val().length) {
