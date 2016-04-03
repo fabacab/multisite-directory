@@ -56,6 +56,10 @@ The `archive-*` page is the main directory page. It will list all the sites in y
 
 If you do not create these files, then the [default WordPress template hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/) will take over, meaning that either the `archive.php` or `index.php` template file in your main site's currently active theme will be used to display the network directory itself and one of `taxonomy.php` or `index.php` will be used to display a filtered view of your directory's categories.
 
+= How do I customize the map's popups? =
+
+By default, when you click on a pin in the directory's map view, you'll see a list of links to the categorized subsites in your network, along with their site logo (if they have one). Most themes do not come with custom styles for map popups, so to customize their look and feel to match your site, you will need to write [CSS](https://codex.wordpress.org/CSS) to define a presentation for the lists yourself.
+
 == Screenshots ==
 
 1. Multisite Directory adds a "Categories" entry to your Sites menu so you can organize your sites using the familiar Category interface.
