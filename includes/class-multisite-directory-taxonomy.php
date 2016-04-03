@@ -121,10 +121,7 @@ class Multisite_Directory_Taxonomy {
      * @param int $term_id
      */
     public function saveTermGeo ($term_id) {
-        if (empty($_POST['geo'])) {
-            return;
-        }
-        $geo = $_POST['geo'];
+        $geo = (isset($_POST['geo'])) ? $_POST['geo'] : '';
 
         $old_geo = get_term_meta($term_id, 'geo', true);
         $new_geo = $this->sanitizeGeoString($geo);
