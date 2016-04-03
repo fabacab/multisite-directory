@@ -22,7 +22,7 @@ Site directory entries are implemented as a hierarchical custom post type in the
 
 After [installing](https://wordpress.org/plugins/multisite-directory/installation/) the plugin, you'll want to:
 
-1. As a Super Admin, go to My Sites &rarr; Network Admin &rarr Sites. Notice the new "Categories" link on the sidebar.
+1. As a Super Admin, go to My Sites &rarr; Network Admin &rarr; Sites. Notice the new "Categories" link on the sidebar.
 1. Create some categories! If the category relates to a location (maybe it's a site for a regional chapter of your organization?), be sure to click the map to geotag it.
 1. Click on "Sites," immediately above "Categories." These pages are the individual directory entries, *not* the blogs. Categorize these pages as you would regular WordPress Pages to organize your Site Directory.
 1. Go any site's Appearance &rarr; Widgets screen, and add a "Network Directory Widget" to a widget area.
