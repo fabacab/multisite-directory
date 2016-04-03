@@ -169,6 +169,8 @@ if (!function_exists('get_site_permalink')) :
      * Gets the URL of the site.
      *
      * @param int $blog_id Optional. The ID of the site in question. Default is the blog ID of the current directory entry.
+     *
+     * @return string
      */
     function get_site_permalink ($blog_id = 0) {
         $cpt = new Multisite_Directory_Entry();
@@ -177,9 +179,7 @@ if (!function_exists('get_site_permalink')) :
             $blog_id = $post->{$cpt::blog_id_meta_key};
         }
 
-        $blog_details = get_blog_details($blog_id);
-
-        return $blog_details->siteurl;
+        return get_site_url($blog_id);
     }
 endif;
 
