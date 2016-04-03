@@ -61,6 +61,7 @@ class Multisite_Directory_Shortcode {
      * @param string $content
      */
     public function __construct ($atts, $content = null) {
+        if (empty($atts)) { $atts = array(); }
         $this->atts = shortcode_atts(array(
             // Recognized shortcode attribute names and their values.
             'display' => 'map',
@@ -79,6 +80,7 @@ class Multisite_Directory_Shortcode {
      * ones that are and decodes their values.
      *
      * @param string $val
+     *
      * @return mixed
      */
     private function parseJsonAttribute ($val) {
