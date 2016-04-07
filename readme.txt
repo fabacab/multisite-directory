@@ -1,5 +1,5 @@
 === Multisite Directory ===
-Contributors: meitar, aurovrata
+Contributors: meitar
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=TJLPJYXHSRBEE&lc=US&item_name=Multisite%20Directory%20WordPress%20Plugin&item_number=multisite-directory&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: multisite, network, taxonomy, posts
 Requires at least: 4.4
