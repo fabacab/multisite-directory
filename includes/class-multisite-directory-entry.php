@@ -55,8 +55,19 @@ class Multisite_Directory_Entry {
      */
     public function __construct () {
         $this->labels = array(
-            'name'                  => _x('Sites', 'Post Type General Name', 'multisite-directory'),
-            'singular_name'         => _x('Site', 'Post Type Singular Name', 'multisite-directory'),
+            'name'                  => _x( 'Sites', 'Post Type General Name', 'multisite-directory' ),
+            'singular_name'         => _x( 'Site', 'Post Type Singular Name', 'multisite-directory' ),
+            'menu_name'             => __( 'Sites', 'multisite-directory' ),
+            'name_admin_bar'        => __( 'Site', 'multisite-directory' ),
+            'archives'              => __( 'Sites', 'multisite-directory' ),
+            'all_items'             => __( 'All Sites', 'multisite-directory' ),
+            'add_new_item'          => __( 'Add New Site', 'multisite-directory' ),
+            'add_new'               => __( 'Add New', 'multisite-directory' ),
+            'new_item'              => __( 'New Site', 'multisite-directory' ),
+            'edit_item'             => __( 'Edit Site', 'multisite-directory' ),
+            'update_item'           => __( 'Update Site', 'multisite-directory' ),
+            'view_item'             => __( 'View Site', 'multisite-directory' ),
+            'search_items'          => __( 'Search Sites', 'multisite-directory' ),
         );
     }
 
