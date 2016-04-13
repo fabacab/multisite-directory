@@ -17,6 +17,24 @@
 class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
 
     /**
+     * Sets up the network in a way appropriate for network-wide tests.
+     */
+    public static function setUpBeforeClass () {
+        $wp_testcase = new WP_UnitTestCase();
+        $wp_testcase->factory->blog->create_many(4); // 5 total
+    }
+
+    /**
+     * Cleans up the testing database for future test runs.
+     */
+    public static function tearDownAfterClass () {
+        $blogs = wp_get_sites();
+        foreach ($blogs as $blog) {
+            wpmu_delete_blog($blog['blog_id'], true); // drop database tables, too
+        }
+    }
+
+    /**
      * Set up tests.
      *
      * The `setUp` method is run by PHPUnit before each test method
@@ -67,6 +85,41 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
     public function test_default_display_is_map_container () {
         $this->expectOutputString('<div id="site-directory-1" class="site-directory-map" style=""></div>');
         do_shortcode('[site-directory]');
+    }
+
+    /**
+     * Ensure that list output can be alphabetized.
+     */
+    public function test_query_args_can_alphabetize_list_output () {
+        // TODO: Add a custom taxonomy factory helper.
+        $term = wp_insert_term('Test Category', 'subsite_category');
+        $post_ids = $this->factory->post->create_many(5, array(
+            'post_type' => 'network_directory',
+        ));
+        foreach ($post_ids as $blog_id => $id) {
+            $blog_id++; // blog_ids start at 1
+            wp_set_post_terms($id, $term['term_id'], 'subsite_category');
+            update_post_meta($id, Multisite_Directory_Entry::blog_id_meta_key, $blog_id);
+        }
+
+        $this->setOutputCallback(array($this, 'collectSiteIDs'));
+        $this->expectOutputString('17,18,19,20'); // I'm not sure why these are the blog IDs created, but they're consistent.
+
+        $query_args = json_encode(array(
+            'orderby' => 'title',
+            'order' => 'ASC'
+        ));
+        do_shortcode("[site-directory display='list' query_args='$query_args']");
+    }
+
+    /**
+     * Makes a CSV-formatted string of site (blog) IDs in the order they were printed.
+     *
+     * This is useful for testing ordering.
+     */
+    public function collectSiteIDs ($output) {
+        preg_match_all('/>Site (\d+)</', $output, $matches);
+        return join(',', array_pop($matches));
     }
 
 }

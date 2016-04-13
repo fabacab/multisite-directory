@@ -21,6 +21,7 @@
  * * `terms` - A space-separated list of term slugs to limit the directory to. Omit this to include all terms.
  * * `show_site_logo` - Whether or not to show site logos in output. Omit this not to show site logos.
  * * `logo_size` - A registered image size that your theme supports. Ignored if `show_site_logo` is not enabled. Defaults to 70px by 70px.
+ * * `query_args` - A JSON-formatted string to pass to `get_posts()`
  *
  * @link https://codex.wordpress.org/Shortcode_API
  */
@@ -69,6 +70,7 @@ class Multisite_Directory_Shortcode {
             'terms' => array(),
             'show_site_logo' => false,
             'logo_size' => array(72,72),
+            'query_args' => '', // Should be a JSON array which is passed to get_posts()
         ), array_map(array($this, 'parseJsonAttribute'), $atts));
         $this->content = $content;
     }
@@ -123,7 +125,7 @@ class Multisite_Directory_Shortcode {
 ?>
 <h1><?php esc_html_e('Similar sites', 'multisite-directory');?></h1>
 <ul class="network-directory-similar-sites">
-    <?php foreach ($terms as $term) { $similar_sites = get_sites_in_directory_by_term($term); ?>
+    <?php foreach ($terms as $term) { $similar_sites = get_sites_in_directory_by_term($term, $this->atts['query_args']); ?>
     <li><?php print esc_html($term->name); ?>
         <ul>
         <?php foreach ($similar_sites as $site_detail) { if (get_current_blog_id() == $site_detail->blog_id) { continue; } ?>
