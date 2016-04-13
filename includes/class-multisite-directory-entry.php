@@ -92,6 +92,10 @@ class Multisite_Directory_Entry {
             ),
             'menu_icon'    => 'dashicons-networking',
             'taxonomies'   => array(Multisite_Directory_Taxonomy::name),
+            'rewrite'      => array(
+                'slug' => str_replace('_', '-', self::name),
+                'with_front' => false,
+            ),
         ));
     }
 
