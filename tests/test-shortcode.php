@@ -21,6 +21,12 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
      */
     public static function setUpBeforeClass () {
         $wp_testcase = new WP_UnitTestCase();
+        // Since the shortcode is only really intended for Multisite
+        // installs, if this isn't a WP Multisite, we skip all tests.
+        if (!is_multisite()) {
+            $wp_testcase->markTestSkipped('Shortcode tests are for WP Multisite only.');
+        }
+
         $wp_testcase->factory->blog->create_many(4); // 5 total
     }
 
@@ -44,11 +50,6 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
      * each test.
      */
     public function setUp () {
-        // Since the shortcode is only really intended for Multisite
-        // installs, if this isn't a WP Multisite, we skip all tests.
-        if (!is_multisite()) {
-            $this->markTestSkipped('Shortcode tests are for WP Multisite only.');
-        }
         // Reset invocation count to initial state before each test.
         // For the shortcode, we want to ensure that its class
         // will "forget" that it has been run at all between tests, since
