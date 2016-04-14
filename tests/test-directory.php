@@ -67,4 +67,5 @@ class Multisite_Directory_TestCase extends WP_UnitTestCase {
         ));
         $this->assertEmpty($posts);
     }
+
 }

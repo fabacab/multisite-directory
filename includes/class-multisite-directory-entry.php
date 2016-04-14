@@ -118,7 +118,43 @@ class Multisite_Directory_Entry {
         switch_to_blog(1); // 1 is (always?) the main blog
         $posts = get_posts($args);
         restore_current_blog();
-        return $posts;
+        return array_filter($posts, array($this, 'is_active'));
+    }
+
+    /**
+     * Tests whether or not the given site is "active."
+     *
+     * A site is "active" if none of its flags for `spam`, `archived`,
+     * and `deleted` are truthy.
+     *
+     * @param int|WP_Post $entry The ID of the blog if an integer, or the Network Directory post if a WP_Post
+     *
+     * @return bool
+     */
+    public function is_active ($entry) {
+        $blog_id = false;
+
+        if (is_int($entry)) {
+            $blog_id = $entry;
+        }
+
+        if ($entry instanceof WP_Post) {
+            $blog_id = $entry->{self::blog_id_meta_key};
+        }
+
+        if (get_blog_status($blog_id, 'archived')) {
+            return false;
+        }
+
+        if (get_blog_status($blog_id, 'spam')) {
+            return false;
+        }
+
+        if (get_blog_status($blog_id, 'deleted')) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

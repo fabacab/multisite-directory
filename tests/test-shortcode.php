@@ -89,6 +89,35 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
     }
 
     /**
+     * Ensures that sites marked "spam," "deleted," or "archived" are not shown in the directory.
+     */
+    public function test_inactive_sites_are_hidden () {
+        $blog_ids = array();
+        $blog_ids[] = $this->factory->blog->create(array('meta' => array(
+            'spam' => true
+        )));
+        $blog_ids[] = $this->factory->blog->create(array('meta' => array(
+            'archived' => true
+        )));
+        $blog_ids[] = $this->factory->blog->create(array('meta' => array(
+            'deleted' => true
+        )));
+        $blog_ids[] = $this->factory->blog->create(array('title' => 'Active Site'));
+        $term = wp_insert_term('Test Category', 'subsite_category');
+        $posts = get_posts(array(
+            'post_type' => 'network_directory',
+            'meta_key' => Multisite_Directory_Entry::blog_id_meta_key,
+            'meta_value' => $blog_ids
+        ));
+        foreach ($posts as $post) {
+            wp_set_post_terms($post->ID, $term['term_id'], 'subsite_category');
+        }
+        $this->setOutputCallback(array($this, 'collectBlogTitles'));
+        $this->expectOutputString('Active Site');
+        do_shortcode('[site-directory display="list"]');
+    }
+
+    /**
      * Ensure that list output can be alphabetized.
      */
     public function test_query_args_can_alphabetize_list_output () {
