@@ -92,19 +92,26 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
      * Ensure that list output can be alphabetized.
      */
     public function test_query_args_can_alphabetize_list_output () {
+        // Create a set of new sites with custom names.
+        $blog_ids = array();
+        $blog_ids[] = $this->factory->blog->create(array('title' => 'A Blog'));
+        $blog_ids[] = $this->factory->blog->create(array('title' => 'B Blog'));
+        $blog_ids[] = $this->factory->blog->create(array('title' => 'C Blog'));
+
+        // Assign the new site entries a test category to group them.
         // TODO: Add a custom taxonomy factory helper.
         $term = wp_insert_term('Test Category', 'subsite_category');
-        $post_ids = $this->factory->post->create_many(5, array(
+        $posts = get_posts(array(
             'post_type' => 'network_directory',
+            'meta_key' => Multisite_Directory_Entry::blog_id_meta_key,
+            'meta_value' => $blog_ids
         ));
-        foreach ($post_ids as $blog_id => $id) {
-            $blog_id++; // blog_ids start at 1
-            wp_set_post_terms($id, $term['term_id'], 'subsite_category');
-            update_post_meta($id, Multisite_Directory_Entry::blog_id_meta_key, $blog_id);
+        foreach ($posts as $post) {
+            wp_set_post_terms($post->ID, $term['term_id'], 'subsite_category');
         }
 
-        $this->setOutputCallback(array($this, 'collectSiteIDs'));
-        $this->expectOutputString('17,18,19,20'); // I'm not sure why these are the blog IDs created, but they're consistent.
+        $this->setOutputCallback(array($this, 'collectBlogTitles'));
+        $this->expectOutputString('A Blog,B Blog,C Blog');
 
         $query_args = json_encode(array(
             'orderby' => 'title',
@@ -114,12 +121,12 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
     }
 
     /**
-     * Makes a CSV-formatted string of site (blog) IDs in the order they were printed.
+     * Makes a CSV-formatted string of site (blog) titles in the order they were printed.
      *
      * This is useful for testing ordering.
      */
-    public function collectSiteIDs ($output) {
-        preg_match_all('/>Site (\d+)</', $output, $matches);
+    public function collectBlogTitles ($output) {
+        preg_match_all('/a href="(?:.*?)">(.*?)</', $output, $matches);
         return join(',', array_pop($matches));
     }
 

@@ -118,13 +118,12 @@ class Multisite_Directory_Shortcode {
         } else if ('list' === $this->atts['display']) {
             ob_start();
 
-            $terms = get_site_terms(get_current_blog_id());
+            $terms = get_site_directory_terms();
             if (!is_wp_error($terms) && !empty($terms)) {
                 // TODO: Refactor this so it's not embedded HTML.
                 //       I used output buffering just for now.
 ?>
-<h1><?php esc_html_e('Similar sites', 'multisite-directory');?></h1>
-<ul class="network-directory-similar-sites">
+<ul class="network-directory-sites">
     <?php foreach ($terms as $term) { $similar_sites = get_sites_in_directory_by_term($term, $this->atts['query_args']); ?>
     <li><?php print esc_html($term->name); ?>
         <ul>

@@ -46,6 +46,7 @@ class WP_Multisite_Directory {
         add_action('wp_enqueue_scripts', array(__CLASS__, 'register_scripts'));
 
         add_action('wpmu_new_blog', array(__CLASS__, 'wpmu_new_blog'));
+        add_action('delete_blog', array(__CLASS__, 'delete_blog'), 10, 2);
         add_action('network_admin_menu', array('WP_Multisite_Directory_Admin', 'network_admin_menu'));
         add_action('signup_blogform', array(__CLASS__, 'signup_blogform'));
         add_action('add_signup_meta', array(__CLASS__, 'add_signup_meta'));
@@ -104,6 +105,8 @@ class WP_Multisite_Directory {
      * Adds a new directory entry to the network directory when a new site is added.
      *
      * @link https://developer.wordpress.org/reference/hooks/wpmu_new_blog/
+     *
+     * @param int $blog_id
      */
     public static function wpmu_new_blog ($blog_id) {
         $signup_cats = get_blog_option($blog_id, 'multisite-directory-signup-categories');
@@ -115,6 +118,28 @@ class WP_Multisite_Directory {
                 delete_blog_option($blog_id, 'multisite-directory-signup-categories');
             }
         }
+    }
+
+    /**
+     * Removes the site directory entry for a blog as it's being deleted.
+     *
+     * @link https://developer.wordpress.org/reference/hooks/delete_blog/
+     *
+     * @param int $blog_id
+     * @param bool $drop
+     */
+    public static function delete_blog ($blog_id, $drop) {
+        switch_to_blog(1);
+        $posts = get_posts(array(
+            'post_type' => Multisite_Directory_Entry::name,
+            'meta_key' => Multisite_Directory_Entry::blog_id_meta_key,
+            'meta_value' => $blog_id
+        ));
+        if (!empty($posts)) {
+            $post_id = $posts[0]->ID;
+            wp_delete_post($post_id, $drop);
+        }
+        restore_current_blog();
     }
 
     /**
