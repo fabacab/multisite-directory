@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=TJLPJ
 Tags: multisite, network, taxonomy, posts
 Requires at least: 4.4
 Tested up to: 4.5
-Stable tag: 0.1.2
+Stable tag: 0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,13 @@ By default, when you click on a pin in the directory's map view, you'll see a li
 4. When users create new sites, they can categorize their blog under the scheme you created. Once their site is created, however, the Super Admin can always re-categorize the new site at will.
 
 == Changelog ==
+
+= Version 0.2 =
+
+* Feature: New shortcode argument `query_args` accepts a JSON string to pass to `get_posts()`.
+* Bugfix: Remove front matter from rewrite rules.
+    * Note that this changes your permalink structure. If the network directory posts on your site are not showing up after you update, be sure to visit your Permalink settings screen and click "Save Changes" (without making any changes) to force a refresh.
+* Numerous bugfixes.
 
 = Version 0.1.2 =
 
