@@ -63,8 +63,8 @@ class Multisite_Directory_Taxonomy {
 
         if (is_admin()) {
             add_action('admin_enqueue_scripts', array('WP_Multisite_Directory_Admin', 'enqueue_scripts'));
-            add_action(self::name.'_add_form_fields', array($this, 'add_form_fields'));
-            add_action(self::name.'_edit_form_fields', array($this, 'edit_form_fields'));
+            add_action(self::name.'_add_form_fields', array(__CLASS__, 'add_form_fields'));
+            add_action(self::name.'_edit_form_fields', array(__CLASS__, 'edit_form_fields'));
             add_action('create_'.self::name, array($this, 'saveTermGeo'));
             add_action('edit_'.self::name, array($this, 'saveTermGeo'));
         }
@@ -78,7 +78,7 @@ class Multisite_Directory_Taxonomy {
      *
      * @param string $taxonomy
      */
-    public function add_form_fields ($taxonomy) {
+    public static function add_form_fields ($taxonomy) {
 ?>
 <div class="form-field term-geo-wrap">
     <label for="term-geo"><?php esc_html_e('Location', 'multisite-directory');?></label>
@@ -97,7 +97,7 @@ class Multisite_Directory_Taxonomy {
      *
      * @param object $tag
      */
-    public function edit_form_fields ($tag) {
+    public static function edit_form_fields ($tag) {
         $geo = get_term_meta($tag->term_id, 'geo', true);
 ?>
 <tr class="form-field term-geo-wrap">
