@@ -3,8 +3,8 @@ Contributors: meitar
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=TJLPJYXHSRBEE&lc=US&item_name=Multisite%20Directory%20WordPress%20Plugin&item_number=multisite-directory&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: multisite, network, taxonomy, posts
 Requires at least: 4.4
-Tested up to: 4.5
-Stable tag: 0.2
+Tested up to: 4.5.2
+Stable tag: 0.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,11 @@ By default, when you click on a pin in the directory's map view, you'll see a li
 4. When users create new sites, they can categorize their blog under the scheme you created. Once their site is created, however, the Super Admin can always re-categorize the new site at will.
 
 == Changelog ==
+
+= Version 0.2.1 =
+
+* Feature: Shortcake UI integration. (You must have the [Shortcode UI plugin](https://wordpress.org/plugins/shortcode-ui/) activated for this to work. Props @misfit.)
+* [Developer](https://wordpress.org/support/topic/hiding-the-geo-parts): You can now programmatically remove the geolocation interface from the Subsite Category admin pages. Use code such as `remove_action('subsite_category_edit_form_fields', array('Multisite_Directory_Taxonomy', 'edit_form_fields));` from a plugin or theme to do so.
 
 = Version 0.2 =
 

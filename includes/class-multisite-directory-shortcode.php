@@ -290,14 +290,17 @@ class Multisite_Directory_Shortcode {
             false,
             true
         );
+
         /**
          * Register shortcode for Shortcode UI
-         * Shortcake (Shortcode UI) is a feature plugin that may soon be added to core. It is much easier than adding quicktags and more intuitive for users.
          *
-         * @link https://github.com/wp-shortcake/shortcake
+         * Shortcake (Shortcode UI) is a feature plugin that may soon be added to core.
+         * It is much easier than adding quicktags and more intuitive for users.
+         *
+         * @link https://wordpress.org/plugins/shortcode-ui/
          */
         if( function_exists( 'shortcode_ui_register_for_shortcode' ) ) {
-            shortcode_ui_register_for_shortcode( 'site-directory', array( 
+            shortcode_ui_register_for_shortcode( 'site-directory', array(
                 'label'         => 'Multisite Directory',
                 'listItemImage' => 'dashicons-networking',
                 'attrs'         => array(
