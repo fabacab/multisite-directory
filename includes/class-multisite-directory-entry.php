@@ -78,7 +78,7 @@ class Multisite_Directory_Entry {
         register_post_type(self::name, array(
             'labels'       => $this->labels,
             'public'       => true,
-            'show_in_menu' => (1 === get_current_blog_id()) ? true : false,
+            'show_in_menu' => (get_directory_blog_id() === get_current_blog_id()) ? true : false,
             'hierarchical' => true,
             'has_archive'  => true,
             'capabilities' => $this->capabilities,
@@ -115,7 +115,7 @@ class Multisite_Directory_Entry {
         // TODO: We should consider making this a variable so the end
         //       user can determine which blog to save the site-wide
         //       directory metadata to.
-        switch_to_blog(1); // 1 is (always?) the main blog
+        switch_to_blog(get_directory_blog_id());
         $posts = get_posts($args);
         restore_current_blog();
         return array_filter($posts, array($this, 'is_active'));
@@ -178,7 +178,7 @@ class Multisite_Directory_Entry {
             )
         );
 
-        switch_to_blog(1);
+        switch_to_blog(get_directory_blog_id());
         $result = wp_insert_post($postarr);
         restore_current_blog();
         return $result;

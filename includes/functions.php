@@ -8,6 +8,25 @@
  *
  * @package WordPress\Plugin\Multisite_Directory
  */
+if (!defined('ABSPATH')) { exit(); } // no direct HTTP access
+
+if (!function_exists('get_directory_blog_id')) :
+    /**
+     * Gets the ID for the site ("blog") housing the current network's Multisite Directory information.
+     *
+     * This function relies on the WP-Multi-Network plugin's presence.
+     *
+     * @return int
+     */
+    function get_directory_blog_id () {
+        if (function_exists('get_main_site_for_network')) {
+            $id = get_main_site_for_network();
+        } else {
+            $id = 1; // not a multi-network so main site will have ID 1
+        }
+        return $id;
+    }
+endif;
 
 if (!function_exists('get_site_directory_terms')) :
     /**
@@ -18,7 +37,7 @@ if (!function_exists('get_site_directory_terms')) :
      * @return array|false|WP_Error
      */
     function get_site_directory_terms () {
-        switch_to_blog(1);
+        switch_to_blog(get_directory_blog_id());
         $terms = get_terms(Multisite_Directory_Taxonomy::name, array(
             'hide_empty' => false,
         ));
@@ -34,7 +53,7 @@ if (!function_exists('get_site_directory_location_terms')) :
      * @return array|false|WP_Error
      */
     function get_site_directory_location_terms () {
-        switch_to_blog(1);
+        switch_to_blog(get_directory_blog_id());
         $terms = get_terms(Multisite_Directory_Taxonomy::name, array(
             'hide_empty' => false,
             'meta_query' => array(
@@ -65,7 +84,7 @@ if (!function_exists('get_site_terms')) :
             $blog_id = $post->{$cpt::blog_id_meta_key};
         }
 
-        switch_to_blog(1);
+        switch_to_blog(get_directory_blog_id());
         $posts = $cpt->get_posts(array(
             'meta_key'  => $cpt::blog_id_meta_key,
             'meta_value' => $blog_id,
@@ -101,7 +120,7 @@ if (!function_exists('get_sites_in_directory_by_term')) :
         $cpt = new Multisite_Directory_Entry();
         $posts = $cpt->get_posts($args);
         $details = array();
-        switch_to_blog(1);
+        switch_to_blog(get_directory_blog_id());
         foreach ($posts as $post) {
             $details[] = get_blog_details($post->{$cpt::blog_id_meta_key});
         }
@@ -129,7 +148,7 @@ if (!function_exists('get_site_directory_logo')) :
             $blog_id = $post->{$cpt::blog_id_meta_key};
         }
 
-        switch_to_blog(1);
+        switch_to_blog(get_directory_blog_id());
         $posts = $cpt->get_posts(array(
             'meta_key'  => $cpt::blog_id_meta_key,
             'meta_value' => $blog_id,
