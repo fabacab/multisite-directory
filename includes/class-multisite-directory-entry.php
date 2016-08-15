@@ -78,7 +78,7 @@ class Multisite_Directory_Entry {
         register_post_type(self::name, array(
             'labels'       => $this->labels,
             'public'       => true,
-            'show_in_menu' => (1 === get_current_blog_id()) ? true : false,
+            'show_in_menu' => (get_directory_blog_id() === get_current_blog_id()) ? true : false,
             'hierarchical' => true,
             'has_archive'  => true,
             'capabilities' => $this->capabilities,
@@ -88,7 +88,8 @@ class Multisite_Directory_Entry {
                 'revisions',
                 'excerpt',
                 'thumbnail',
-                'page-attributes'
+                'page-attributes',
+                'custom-fields',
             ),
             'menu_icon'    => 'dashicons-networking',
             'taxonomies'   => array(Multisite_Directory_Taxonomy::name),
@@ -96,6 +97,36 @@ class Multisite_Directory_Entry {
                 'slug' => str_replace('_', '-', self::name),
                 'with_front' => false,
             ),
+        ));
+
+        add_action('load-post.php', array(__CLASS__, 'addHelpTabs'));
+    }
+
+    public static function addHelpTabs () {
+        $screen = get_current_screen();
+        if (self::name !== $screen->post_type) {
+            return;
+        }
+
+        $content = sprintf(
+            esc_html__(
+                '
+                %1$s
+                On this page you edit the Site Directory entry associated with one of your Network blogs.
+                Each Site entry is associated with a site in your WP Multisite network using a %3$s custom field.
+                %2$s
+                ',
+                'multisite-directory'
+            ),
+            '<p>',                                    // %1$s
+            '</p>',                                   // %2$s
+            '<code>'.self::blog_id_meta_key.'</code>' // %3$s
+        );
+
+        $screen->add_help_tab(array(
+            'title' => esc_html__('Editing a Directory entry', 'multisite-directory'),
+            'id' => esc_attr('network_directory-help_tab'),
+            'content' => $content,
         ));
     }
 
@@ -115,7 +146,7 @@ class Multisite_Directory_Entry {
         // TODO: We should consider making this a variable so the end
         //       user can determine which blog to save the site-wide
         //       directory metadata to.
-        switch_to_blog(1); // 1 is (always?) the main blog
+        switch_to_blog(get_directory_blog_id());
         $posts = get_posts($args);
         restore_current_blog();
         return array_filter($posts, array($this, 'is_active'));
@@ -178,7 +209,7 @@ class Multisite_Directory_Entry {
             )
         );
 
-        switch_to_blog(1);
+        switch_to_blog(get_directory_blog_id());
         $result = wp_insert_post($postarr);
         restore_current_blog();
         return $result;
