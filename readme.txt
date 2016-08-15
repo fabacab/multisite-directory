@@ -3,8 +3,8 @@ Contributors: meitar
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=TJLPJYXHSRBEE&lc=US&item_name=Multisite%20Directory%20WordPress%20Plugin&item_number=multisite-directory&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: multisite, network, taxonomy, posts
 Requires at least: 4.4
-Tested up to: 4.5.2
-Stable tag: 0.2.1
+Tested up to: 4.6
+Stable tag: 0.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,29 +72,40 @@ By default, when you click on a pin in the directory's map view, you'll see a li
 
 == Changelog ==
 
-= Version 0.2.1 =
+= 0.2.2 =
+
+* Adds `custom-fields` support to Site Directory entries.
+* Adds contextual help on the Site Directory post edit screen.
+
+= 0.2.1 =
 
 * Feature: Shortcake UI integration. (You must have the [Shortcode UI plugin](https://wordpress.org/plugins/shortcode-ui/) activated for this to work. Props @misfit.)
 * [Developer](https://wordpress.org/support/topic/hiding-the-geo-parts): You can now programmatically remove the geolocation interface from the Subsite Category admin pages. Use code such as `remove_action('subsite_category_edit_form_fields', array('Multisite_Directory_Taxonomy', 'edit_form_fields));` from a plugin or theme to do so.
 
-= Version 0.2 =
+= 0.2 =
 
 * Feature: New shortcode argument `query_args` accepts a JSON string to pass to `get_posts()`.
 * Bugfix: Remove front matter from rewrite rules.
     * Note that this changes your permalink structure. If the network directory posts on your site are not showing up after you update, be sure to visit your Permalink settings screen and click "Save Changes" (without making any changes) to force a refresh.
 * Numerous bugfixes.
 
-= Version 0.1.2 =
+= 0.1.2 =
 
 * Bugfix: "Remove location" button on taxonomy edit screen correctly deletes term geolocation metadata.
 
-= Version 0.1.1 =
+= 0.1.1 =
 
 * [Bugfix](https://wordpress.org/support/topic/problem-with-shortcode-on-page): Fix PHP warning when no attributes are passed to the shortcode.
 
-= Version 0.1 =
+= 0.1 =
 
 * First public release.
+
+== Upgrade Notice ==
+
+= 0.2.2 =
+
+This is a maintenance release, exposing a user interface to re-associate Site Directory entries with a given site/blog.
 
 == Other notes ==
 

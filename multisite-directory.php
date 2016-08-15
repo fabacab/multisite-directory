@@ -7,7 +7,7 @@
  * * Plugin Name: Multisite Directory
  * * Plugin URI: https://wordpress.org/plugins/multisite-directory/
  * * Description: Adds a Network-wide site directory to your WP Multisite network.
- * * Version: 0.2.1
+ * * Version: 0.2.2
  * * Author: Meitar Moscovitz <meitar@maymay.net>
  * * Author URI: https://maymay.net/
  * * Text Domain: multisite-directory

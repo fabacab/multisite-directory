@@ -88,7 +88,8 @@ class Multisite_Directory_Entry {
                 'revisions',
                 'excerpt',
                 'thumbnail',
-                'page-attributes'
+                'page-attributes',
+                'custom-fields',
             ),
             'menu_icon'    => 'dashicons-networking',
             'taxonomies'   => array(Multisite_Directory_Taxonomy::name),
@@ -96,6 +97,36 @@ class Multisite_Directory_Entry {
                 'slug' => str_replace('_', '-', self::name),
                 'with_front' => false,
             ),
+        ));
+
+        add_action('load-post.php', array(__CLASS__, 'addHelpTabs'));
+    }
+
+    public static function addHelpTabs () {
+        $screen = get_current_screen();
+        if (self::name !== $screen->post_type) {
+            return;
+        }
+
+        $content = sprintf(
+            esc_html__(
+                '
+                %1$s
+                On this page you edit the Site Directory entry associated with one of your Network blogs.
+                Each Site entry is associated with a site in your WP Multisite network using a %3$s custom field.
+                %2$s
+                ',
+                'multisite-directory'
+            ),
+            '<p>',                                    // %1$s
+            '</p>',                                   // %2$s
+            '<code>'.self::blog_id_meta_key.'</code>' // %3$s
+        );
+
+        $screen->add_help_tab(array(
+            'title' => esc_html__('Editing a Directory entry', 'multisite-directory'),
+            'id' => esc_attr('network_directory-help_tab'),
+            'content' => $content,
         ));
     }
 
