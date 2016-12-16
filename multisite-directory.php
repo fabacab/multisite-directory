@@ -41,6 +41,7 @@ class WP_Multisite_Directory {
         require_once 'admin/class-multisite-directory-admin.php';
 
         add_action('init', array(__CLASS__, 'initialize'));
+        add_action('plugins_loaded', array(__CLASS__, 'load_textdomain'));
         add_action('widgets_init', array(__CLASS__, 'widgets_initialize'));
         add_action('admin_enqueue_scripts', array(__CLASS__, 'register_scripts'));
         add_action('wp_enqueue_scripts', array(__CLASS__, 'register_scripts'));
@@ -49,7 +50,7 @@ class WP_Multisite_Directory {
         add_action('delete_blog', array(__CLASS__, 'delete_blog'), 10, 2);
         add_action('network_admin_menu', array('WP_Multisite_Directory_Admin', 'network_admin_menu'));
         add_action('signup_blogform', array(__CLASS__, 'signup_blogform'));
-        add_action('add_signup_meta', array(__CLASS__, 'add_signup_meta'));
+        add_action('network_site_new_form', array(__CLASS__, 'signup_blogform'));
 
         add_filter('dashboard_glance_items', array(__CLASS__, 'dashboard_glance_items'));
 
@@ -69,6 +70,15 @@ class WP_Multisite_Directory {
         $cpt->register();
 
         Multisite_Directory_Shortcode::register();
+    }
+
+    /**
+     * Loads the plugin's translations
+     *
+     * @link https://developer.wordpress.org/reference/functions/load_plugin_textdomain/
+     */
+    public static function load_textdomain() {
+        load_plugin_textdomain('multisite-directory', false, plugin_basename( dirname( __FILE__ ) ) . '/languages');
     }
 
     /**
@@ -106,10 +116,14 @@ class WP_Multisite_Directory {
      *
      * @link https://developer.wordpress.org/reference/hooks/wpmu_new_blog/
      *
+     * @uses $_POST['tax_input'] to retrieve the category fields during new site creation on either the signup front-end or the Network Admin screen
+     *
      * @param int $blog_id
      */
     public static function wpmu_new_blog ($blog_id) {
-        $signup_cats = get_blog_option($blog_id, 'multisite-directory-signup-categories');
+        if (isset($_POST['tax_input']) && !empty($_POST['tax_input'][Multisite_Directory_Taxonomy::name])) {
+            $signup_cats = $_POST['tax_input'][Multisite_Directory_Taxonomy::name];
+        }
         $cpt = new Multisite_Directory_Entry();
         $post_id = $cpt->add_new_site_post($blog_id);
         if (!is_wp_error($post_id) && !empty($signup_cats)) {
@@ -179,52 +193,55 @@ class WP_Multisite_Directory {
      * @todo Handle "large" networks correctly.
      */
     private function initializeDirectory () {
-        $sites = wp_get_sites(array(
+        $sites = get_sites(array(
             'spam'    => 0, // don't include sites marked as spam
             'deleted' => 0, // or sites that have been "deleted".
+            'number'  => null, // return all sites (defaults to 100)
         ));
         $cpt = new Multisite_Directory_Entry();
         foreach ($sites as $site) {
             $posts = $cpt->get_posts(array(
                 'post_status' => 'any',
                 'meta_key'    => $cpt::blog_id_meta_key,
-                'meta_value'  => $site['blog_id']
+                'meta_value'  => $site->blog_id
             ));
             if (empty($posts)) {
-                $cpt->add_new_site_post($site['blog_id']);
+                $cpt->add_new_site_post($site->blog_id);
             }
         }
     }
 
     /**
-     * Outputs site directory category fields during new site signup on front-end.
+     * Outputs site directory category fields during new site signup on front-end or the Network Admin screen.
      *
      * @link https://developer.wordpress.org/reference/hooks/signup_blogform/
+     *
+     * @uses $pagenow to detect if the form is on the Network Admin add new site screen and output matching HTML
      */
     public static function signup_blogform () {
+        global $pagenow;
         require_once ABSPATH.'wp-admin/includes/template.php';
         $html = wp_terms_checklist(0, array(
             'taxonomy' => Multisite_Directory_Taxonomy::name,
             'echo'     => false,
         ));
-        print '<div id="multisite-directory-signup-categories">';
-        print '<label>'.__('Site Categories:', 'multisite-directory').'</label>';
-        print str_replace("disabled='disabled'", '', $html);
-        print '</div><!-- #multisite-directory-signup-categories -->';
-    }
+        $html = '<ul style="list-style:none; margin:0;">' . str_replace("disabled='disabled'", '', $html) . '</ul>';
+        $label = '<label>'.__('Site Categories:', 'multisite-directory').'</label>';
 
-    /**
-     * Adds the site categories to the default site creation meta variables.
-     *
-     * @link https://developer.wordpress.org/reference/hooks/add_signup_meta/
-     *
-     * @param array $meta
-     */
-    public static function add_signup_meta ($meta) {
-        if (isset($_POST['tax_input']) && !empty($_POST['tax_input'][Multisite_Directory_Taxonomy::name])) {
-            $meta['multisite-directory-signup-categories'] = $_POST['tax_input'][Multisite_Directory_Taxonomy::name];
+        print '<div id="multisite-directory-signup-categories">';
+        if ('site-new.php' == $pagenow) {
+            print '<table class="form-table">';
+            print '<tbody><tr class="form-field"><th scope="row">';
+            print $label;
+            print '</th><td>';
+            print $html;
+            print '</td></tr></tbody></table>';
         }
-        return $meta;
+        else {
+            print $label;
+            print $html;
+        }
+        print '</div><!-- #multisite-directory-signup-categories -->';
     }
 
     /**

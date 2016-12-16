@@ -2,7 +2,7 @@
 Contributors: meitar
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=TJLPJYXHSRBEE&lc=US&item_name=Multisite%20Directory%20WordPress%20Plugin&item_number=multisite-directory&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: multisite, network, taxonomy, posts
-Requires at least: 4.4
+Requires at least: 4.6
 Tested up to: 4.6
 Stable tag: 0.2.2
 License: GPLv2 or later
