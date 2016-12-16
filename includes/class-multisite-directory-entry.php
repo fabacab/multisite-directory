@@ -57,7 +57,7 @@ class Multisite_Directory_Entry {
         $this->labels = array(
             'name'                  => _x( 'Sites', 'Post Type General Name', 'multisite-directory' ),
             'singular_name'         => _x( 'Site', 'Post Type Singular Name', 'multisite-directory' ),
-            'menu_name'             => __( 'Sites', 'multisite-directory' ),
+            'menu_name'             => __( 'Directory', 'multisite-directory' ),
             'name_admin_bar'        => __( 'Site', 'multisite-directory' ),
             'archives'              => __( 'Sites', 'multisite-directory' ),
             'all_items'             => __( 'All Sites', 'multisite-directory' ),
