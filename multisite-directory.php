@@ -17,7 +17,7 @@
  *
  * @license https://www.gnu.org/licenses/gpl-3.0.en.html
  *
- * @copyright Copyright (c) 2016 TK-TODO
+ * @copyright Copyright (c) 2016 Meitar "maymay" Moscovitz
  *
  * @package WordPress\Plugin\Multisite_Directory
  */
@@ -50,7 +50,7 @@ class WP_Multisite_Directory {
         add_action('delete_blog', array(__CLASS__, 'delete_blog'), 10, 2);
         add_action('network_admin_menu', array('WP_Multisite_Directory_Admin', 'network_admin_menu'));
         add_action('signup_blogform', array(__CLASS__, 'signup_blogform'));
-        add_action('network_site_new_form', array(__CLASS__, 'signup_blogform'));
+        add_action('network_site_new_form', array(__CLASS__, 'network_site_new_form'));
 
         add_filter('dashboard_glance_items', array(__CLASS__, 'dashboard_glance_items'));
 
@@ -212,36 +212,44 @@ class WP_Multisite_Directory {
     }
 
     /**
-     * Outputs site directory category fields during new site signup on front-end or the Network Admin screen.
+     * Gets HTML `<li>`s listing what a Multisite Directory entry can be assigned to.
      *
-     * @link https://developer.wordpress.org/reference/hooks/signup_blogform/
-     *
-     * @uses $pagenow to detect if the form is on the Network Admin add new site screen and output matching HTML
+     * @return string
      */
-    public static function signup_blogform () {
-        global $pagenow;
+    private static function get_terms_checklist_html () {
         require_once ABSPATH.'wp-admin/includes/template.php';
         $html = wp_terms_checklist(0, array(
             'taxonomy' => Multisite_Directory_Taxonomy::name,
             'echo'     => false,
         ));
-        $html = '<ul style="list-style:none; margin:0;">' . str_replace("disabled='disabled'", '', $html) . '</ul>';
-        $label = '<label>'.__('Site Categories:', 'multisite-directory').'</label>';
+        $html = str_replace("disabled='disabled'", '', $html);
+        return $html;
+    }
 
+    /**
+     * Outputs site directory category fields during new site signup.
+     *
+     * @link https://developer.wordpress.org/reference/hooks/signup_blogform/
+     */
+    public static function signup_blogform () {
         print '<div id="multisite-directory-signup-categories">';
-        if ('site-new.php' == $pagenow) {
-            print '<table class="form-table">';
-            print '<tbody><tr class="form-field"><th scope="row">';
-            print $label;
-            print '</th><td>';
-            print $html;
-            print '</td></tr></tbody></table>';
-        }
-        else {
-            print $label;
-            print $html;
-        }
+        esc_html_e('Site Categories', 'multisite-directory');
+        print '<ul>'.self::get_terms_checklist_html().'</ul>';
         print '</div><!-- #multisite-directory-signup-categories -->';
+    }
+
+    /**
+     * Outputs site directory category fields on Network Admin's Add Site screen.
+     *
+     * @link https://developer.wordpress.org/reference/hooks/network_site_new_form/
+     */
+    public static function network_site_new_form () {
+        print '<table class="form-table">';
+        print '<tbody><tr class="form-field"><th scope="row">';
+        esc_html_e('Site Categories', 'multisite-directory');
+        print '</th><td>';
+        print '<ul>'.self::get_terms_checklist_html().'</ul>';
+        print '</td></tr></tbody></table>';
     }
 
     /**

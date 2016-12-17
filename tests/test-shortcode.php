@@ -4,7 +4,7 @@
  *
  * @license https://www.gnu.org/licenses/gpl-3.0.en.html
  *
- * @copyright Copyright (c) 2016 TK-TODO
+ * @copyright Copyright (c) 2016 Meitar "maymay" Moscovitz
  *
  * @package WordPress\Plugin\Multisite_Directory
  */
