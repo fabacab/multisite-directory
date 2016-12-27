@@ -24,9 +24,9 @@ After [installing](https://wordpress.org/plugins/multisite-directory/installatio
 
 1. As a Super Admin, go to My Sites &rarr; Network Admin &rarr; Sites. Notice the new "Categories" link on the sidebar.
 1. Create some categories! If the category relates to a location (maybe it's a site for a regional chapter of your organization?), be sure to click the map to geotag it.
-1. Click on "Sites," immediately above "Categories." These pages are the individual directory entries, *not* the blogs. Categorize these pages as you would regular WordPress Pages to organize your Site Directory.
-1. Go any site's Appearance &rarr; Widgets screen, and add a "Network Directory Widget" to a widget area.
-1. If you've geotagged some of your Site Categories, choose "Display as list" from the widget options. (Otherwise, leave it on "Display as list.")
+1. Click on "Directory," immediately above "Categories." These pages are the individual directory entries, *not* the blogs. Categorize these pages as you would regular WordPress Pages to organize your Site Directory.
+1. Go to any site's Appearance &rarr; Widgets screen, and add a "Network Directory Widget" to a widget area.
+1. If you've geotagged some of your Site Categories, choose "Display as map" from the widget options. (Otherwise, leave it on "Display as list.")
 1. Click *Save*, view your blog, and enjoy your new Site Directory!
 
 Check out the [Screenshots](https://wordpress.org/plugins/multisite-directory/screenshots/) for a few examples.
