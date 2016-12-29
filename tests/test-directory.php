@@ -34,10 +34,7 @@ class Multisite_Directory_TestCase extends WP_UnitTestCase {
      * Cleans up the testing database for future test runs.
      */
     public static function tearDownAfterClass () {
-        $blogs = wp_get_sites();
-        foreach ($blogs as $blog) {
-            wpmu_delete_blog($blog['blog_id'], true); // drop database tables, too
-        }
+        WP_Multisite_Directory_UnitTest_Helper::tearDownAfterClass();
     }
 
     /**
@@ -68,4 +65,28 @@ class Multisite_Directory_TestCase extends WP_UnitTestCase {
         $this->assertEmpty($posts);
     }
 
+}
+
+/**
+ * This small class tests the directory itself on WP single site installs.
+ */
+class Multisite_Directory_On_Singlesite_TestCase extends WP_UnitTestCase {
+
+    /**
+     * Set up tests for single site.
+     */
+    public function setUp () {
+        if (is_multisite()) {
+            $this->markTestSkipped('Single-site tests are skipped on WP Multisite builds.');
+        }
+    }
+
+    /**
+     * Protect users if they activate this plugin on a WP single site.
+     *
+     * @link https://wordpress.org/support/topic/fatal-error-2384/
+     */
+    public function test_activating_on_singlesite_is_a_noop () {
+        $this->assertSame(false, has_action('init', array('WP_Multisite_Directory', 'initialize')));
+    }
 }

@@ -34,10 +34,7 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
      * Cleans up the testing database for future test runs.
      */
     public static function tearDownAfterClass () {
-        $blogs = wp_get_sites();
-        foreach ($blogs as $blog) {
-            wpmu_delete_blog($blog['blog_id'], true); // drop database tables, too
-        }
+        WP_Multisite_Directory_UnitTest_Helper::tearDownAfterClass();
     }
 
     /**
@@ -112,9 +109,13 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
         foreach ($posts as $post) {
             wp_set_post_terms($post->ID, $term['term_id'], 'subsite_category');
         }
+
         $this->setOutputCallback(array($this, 'collectBlogTitles'));
         $this->expectOutputString('Active Site');
         do_shortcode('[site-directory display="list"]');
+
+        // Clean up the test category from the database.
+        wp_delete_term($term['term_id'], 'subsite_category');
     }
 
     /**
@@ -147,6 +148,9 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
             'order' => 'ASC'
         ));
         do_shortcode("[site-directory display='list' query_args='$query_args']");
+
+        // Clean up the test category from the database.
+        wp_delete_term($term['term_id'], 'subsite_category');
     }
 
     /**
@@ -173,15 +177,12 @@ class Multisite_Directory_Shortcode_On_Singlesite_TestCase extends WP_UnitTestCa
         if (is_multisite()) {
             $this->markTestSkipped('Single-site tests are skipped on WP Multisite builds.');
         }
-        // Reset invocation count to initial state before each test.
-        Multisite_Directory_Shortcode::$invocations = 0;
     }
 
     /**
-     * Ensure shortode is silent on single site installs.
+     * Ensure shortode is not registered on single-site installs.
      */
-    public function test_output_is_empty () {
-        $this->expectOutputString('');
-        do_shortcode('[site-directory]');
+    public function test_shortcode_is_unregistered () {
+        $this->assertFalse(shortcode_exists('site-directory'));
     }
 }

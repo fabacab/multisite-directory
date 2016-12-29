@@ -33,6 +33,10 @@ class WP_Multisite_Directory {
      * Registers plugin functionality with the WordPress API.
      */
     public static function register () {
+        if (!is_multisite()) {
+            return;
+        }
+
         require_once 'includes/class-multisite-directory-taxonomy.php';
         require_once 'includes/class-multisite-directory-entry.php';
         require_once 'includes/class-multisite-directory-widget.php';
