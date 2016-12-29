@@ -55,7 +55,6 @@ class WP_Multisite_Directory {
         add_action('network_admin_menu', array('WP_Multisite_Directory_Admin', 'network_admin_menu'));
         add_action('signup_blogform', array(__CLASS__, 'signup_blogform'));
         add_action('network_site_new_form', array(__CLASS__, 'network_site_new_form'));
-
         add_filter('dashboard_glance_items', array(__CLASS__, 'dashboard_glance_items'));
 
         register_activation_hook(__FILE__, array(__CLASS__, 'activate'));
