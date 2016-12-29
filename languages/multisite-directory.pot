@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Multisite Directory\n"
-"POT-Creation-Date: 2016-12-02 12:21-0300\n"
-"PO-Revision-Date: 2016-12-02 12:21-0300\n"
+"POT-Creation-Date: 2016-12-28 10:35-0300\n"
+"PO-Revision-Date: 2016-12-28 10:35-0300\n"
 "Last-Translator: Henrique Vianna <hvianna@gmail.com>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -12,10 +12,10 @@ msgstr ""
 "X-Generator: Poedit 1.7.1\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-KeywordsList: __;_e;esc_html_e;esc_html__;_n;_x;_ex\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin/class-multisite-directory-admin.php:46 multisite-directory.php:258
+#: admin/class-multisite-directory-admin.php:46 multisite-directory.php:267
 msgid "Site Directory Categories"
 msgstr ""
 
@@ -23,13 +23,18 @@ msgstr ""
 msgid "Categories"
 msgstr ""
 
-#: includes/class-multisite-directory-entry.php:60
+#: includes/class-multisite-directory-entry.php:58
 #: includes/class-multisite-directory-entry.php:62
 msgid "Sites"
 msgstr ""
 
+#: includes/class-multisite-directory-entry.php:59
 #: includes/class-multisite-directory-entry.php:61
 msgid "Site"
+msgstr ""
+
+#: includes/class-multisite-directory-entry.php:60
+msgid "Directory"
 msgstr ""
 
 #: includes/class-multisite-directory-entry.php:63
@@ -64,6 +69,23 @@ msgstr ""
 msgid "Search Sites"
 msgstr ""
 
+#: includes/class-multisite-directory-entry.php:113
+#, php-format
+msgid ""
+"\n"
+"                %1$s\n"
+"                On this page you edit the Site Directory entry associated "
+"with one of your Network blogs.\n"
+"                Each Site entry is associated with a site in your WP "
+"Multisite network using a %3$s custom field.\n"
+"                %2$s\n"
+"                "
+msgstr ""
+
+#: includes/class-multisite-directory-entry.php:127
+msgid "Editing a Directory entry"
+msgstr ""
+
 #: includes/class-multisite-directory-shortcode.php:251
 msgid "No sites at this location."
 msgstr ""
@@ -76,6 +98,27 @@ msgstr ""
 msgid "Show Site Logo"
 msgstr ""
 
+#: includes/class-multisite-directory-taxonomy.php:85
+#: includes/class-multisite-directory-taxonomy.php:105
+msgid "Location"
+msgstr ""
+
+#: includes/class-multisite-directory-taxonomy.php:87
+#: includes/class-multisite-directory-taxonomy.php:109
+msgid "Remove location"
+msgstr ""
+
+#: includes/class-multisite-directory-taxonomy.php:89
+#: includes/class-multisite-directory-taxonomy.php:110
+msgid ""
+"If this category relates to a physical location or area, add its "
+"geographical coordinates."
+msgstr ""
+
+#: includes/class-multisite-directory-taxonomy.php:154
+msgid "Show All"
+msgstr ""
+
 #: includes/class-multisite-directory-widget.php:22
 msgid "Network Directory Widget"
 msgstr ""
@@ -84,6 +127,23 @@ msgstr ""
 msgid "Shows similarly-categorized Sites from the Network Directory."
 msgstr ""
 
-#: multisite-directory.php:226
-msgid "Site Categories:"
+#: includes/class-multisite-directory-widget.php:53
+msgid "Display as list"
+msgstr ""
+
+#: includes/class-multisite-directory-widget.php:64
+msgid "Display as map"
+msgstr ""
+
+#: includes/class-multisite-directory-widget.php:76
+msgid "Show site logos"
+msgstr ""
+
+#. translators: Part of the logo size widget, like "Show site logo at size: "
+#: includes/class-multisite-directory-widget.php:81
+msgid "at size"
+msgstr ""
+
+#: multisite-directory.php:237 multisite-directory.php:250
+msgid "Site Categories"
 msgstr ""

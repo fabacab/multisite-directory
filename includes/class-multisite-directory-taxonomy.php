@@ -57,6 +57,7 @@ class Multisite_Directory_Taxonomy {
         register_taxonomy(self::name, Multisite_Directory_Entry::name, array(
             'hierarchical' => true,
             'capabilities' => $this->capabilities,
+            'show_admin_column' => true,
         ));
 
         register_meta('term', 'geo', array($this, 'sanitizeGeoString'));
@@ -67,6 +68,7 @@ class Multisite_Directory_Taxonomy {
             add_action(self::name.'_edit_form_fields', array(__CLASS__, 'edit_form_fields'));
             add_action('create_'.self::name, array($this, 'saveTermGeo'));
             add_action('edit_'.self::name, array($this, 'saveTermGeo'));
+            add_action('restrict_manage_posts', array(__CLASS__, 'add_taxonomy_admin_filter'));
         }
 
     }
@@ -130,6 +132,34 @@ class Multisite_Directory_Taxonomy {
             delete_term_meta($term_id, 'geo');
         } else if ($old_geo !== $new_geo) {
             update_term_meta($term_id, 'geo', $new_geo);
+        }
+    }
+
+    /**
+     * Adds a dropdown box to filter directory entries by category in the admin listing
+     *
+     * @link https://developer.wordpress.org/reference/hooks/restrict_manage_posts/
+     *
+     * @param string $post_type
+     */
+    public static function add_taxonomy_admin_filter ($post_type) {
+
+        if (Multisite_Directory_Entry::name === $post_type) {
+            $tax_obj = get_taxonomy(self::name);
+            $tax_name = $tax_obj->labels->name;
+            $terms = get_terms(self::name);
+            if (count($terms) > 0) {
+                echo '<select name="' . esc_attr(self::name) . '" id="' . esc_attr(self::name) . '">';
+                echo '<option value="">' . esc_html__('Show All', 'multisite-directory') . ' ' . esc_html($tax_name) . '</option>';
+                foreach ($terms as $term) {
+                    echo '<option value="' . esc_attr($term->slug) . '"';
+                    if (isset($_GET[self::name])) {
+                        selected($_GET[self::name], $term->slug);
+                    }
+                    echo '>' . esc_html($term->name) . ' (' . esc_html($term->count) . ')</option>';
+                }
+                echo '</select>';
+            }
         }
     }
 
