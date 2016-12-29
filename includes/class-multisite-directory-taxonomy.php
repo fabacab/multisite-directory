@@ -143,7 +143,6 @@ class Multisite_Directory_Taxonomy {
      * @param string $post_type
      */
     public static function add_taxonomy_admin_filter ($post_type) {
-
         if (Multisite_Directory_Entry::name === $post_type) {
             $tax_obj = get_taxonomy(self::name);
             $tax_name = $tax_obj->labels->name;

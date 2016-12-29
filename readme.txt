@@ -3,8 +3,8 @@ Contributors: meitar
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=TJLPJYXHSRBEE&lc=US&item_name=Multisite%20Directory%20WordPress%20Plugin&item_number=multisite-directory&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: multisite, network, taxonomy, posts
 Requires at least: 4.6
-Tested up to: 4.6
-Stable tag: 0.2.2
+Tested up to: 4.7
+Stable tag: 0.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,11 @@ By default, when you click on a pin in the directory's map view, you'll see a li
 
 == Changelog ==
 
+= 0.2.3 =
+
+* Updated translations and numerous compatibility improvements (props @hvianna).
+* Protect against errors when mistakenly activated on a single-site WordPress install.
+
 = 0.2.2 =
 
 * Adds `custom-fields` support to Site Directory entries.
@@ -103,9 +108,9 @@ By default, when you click on a pin in the directory's map view, you'll see a li
 
 == Upgrade Notice ==
 
-= 0.2.2 =
+= 0.2.3 =
 
-This is a maintenance release, exposing a user interface to re-associate Site Directory entries with a given site/blog.
+This is a maintenance release, improving compatibility with WordPress 4.7 and adding updated translations.
 
 == Other notes ==
 
