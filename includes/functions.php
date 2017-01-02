@@ -32,15 +32,18 @@ if (!function_exists('get_site_directory_terms')) :
     /**
      * Gets all categories in the site directory.
      *
+     * @param array $args
+     *
      * @uses get_terms()
      *
      * @return array|false|WP_Error
      */
-    function get_site_directory_terms () {
+    function get_site_directory_terms ($args = array()) {
         switch_to_blog(get_directory_blog_id());
-        $terms = get_terms(Multisite_Directory_Taxonomy::name, array(
+        $terms = get_terms(wp_parse_args($args, array(
+            'taxonomy'   => Multisite_Directory_Taxonomy::name,
             'hide_empty' => false,
-        ));
+        )));
         restore_current_blog();
         return $terms;
     }
@@ -50,18 +53,23 @@ if (!function_exists('get_site_directory_location_terms')) :
     /**
      * Gets all categories in the site directory that have location metadata.
      *
+     * @param array $args
+     *
+     * @uses get_terms()
+     *
      * @return array|false|WP_Error
      */
-    function get_site_directory_location_terms () {
+    function get_site_directory_location_terms ($args = array()) {
         switch_to_blog(get_directory_blog_id());
-        $terms = get_terms(Multisite_Directory_Taxonomy::name, array(
+        $terms = get_terms(wp_parse_args($args, array(
+            'taxonomy'   => Multisite_Directory_Taxonomy::name,
             'hide_empty' => false,
             'meta_query' => array(
                 array(
                     'key' => 'geo',
                 )
             ),
-        ));
+        )));
         restore_current_blog();
         return $terms;
     }

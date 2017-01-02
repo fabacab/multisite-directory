@@ -18,10 +18,9 @@
  *
  * * `style` - An inline `style` attribute, useful for adding custom CSS to the container.
  * * `display` - A string describing how to display the sites. Can be either `list` or `map`. (Default: `map`.)
- * * `terms` - A space-separated list of term slugs to limit the directory to. Omit this to include all terms.
  * * `show_site_logo` - Whether or not to show site logos in output. Omit this not to show site logos.
  * * `logo_size` - A registered image size that your theme supports. Ignored if `show_site_logo` is not enabled. Defaults to 70px by 70px.
- * * `query_args` - A JSON-formatted string to pass to `get_posts()`
+ * * `query_args` - A JSON-formatted string to pass to `get_posts()` or `get_terms()`
  *
  * @link https://codex.wordpress.org/Shortcode_API
  */
@@ -108,7 +107,7 @@ class Multisite_Directory_Shortcode {
         // When displaying a map
         if ('map' === $this->atts['display']) {
             // Find all mappable terms
-            $terms = get_site_directory_location_terms();
+            $terms = get_site_directory_location_terms($this->atts['query_args']);
 
             // Turn that into GeoJSON (easier to map)
             $data = $this->makeGeoJSON($terms);
@@ -118,7 +117,7 @@ class Multisite_Directory_Shortcode {
         } else if ('list' === $this->atts['display']) {
             ob_start();
 
-            $terms = get_site_directory_terms();
+            $terms = get_site_directory_terms($this->atts['query_args']);
             if (!is_wp_error($terms) && !empty($terms)) {
                 // TODO: Refactor this so it's not embedded HTML.
                 //       I used output buffering just for now.
