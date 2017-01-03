@@ -77,15 +77,15 @@ class Multisite_Directory_Shortcode {
     /**
      * Parses a complex shortcode attribute.
      *
-     * Some attributes can be passed as JSON. This method detects the
-     * ones that are and decodes their values.
+     * Some shortcode attributes can be passed as (URL-encoded) JSON.
+     * This method detects the ones that are and decodes their values.
      *
-     * @param string $val
+     * @param string $val A shortcode attribute's value.
      *
-     * @return mixed
+     * @return string|array The original value or its array representation.
      */
     private function parseJsonAttribute ($val) {
-        $parsed = json_decode($val);
+        $parsed = json_decode(urldecode($val), true);
         if (JSON_ERROR_NONE === json_last_error()) {
             return $parsed;
         } else {
