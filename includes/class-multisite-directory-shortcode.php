@@ -21,6 +21,7 @@
  * * `show_site_logo` - Whether or not to show site logos in output. Omit this not to show site logos.
  * * `logo_size` - A registered image size that your theme supports. Ignored if `show_site_logo` is not enabled. Defaults to 70px by 70px.
  * * `query_args` - A JSON-formatted string to pass to `get_posts()` or `get_terms()`
+ * * `site_category__not_in` - A comma-separated list of site category slugs to exclude.
  *
  * @link https://codex.wordpress.org/Shortcode_API
  */
@@ -55,10 +56,12 @@ class Multisite_Directory_Shortcode {
     private $content;
 
     /**
-     * Constructor.
+     * Parses shortcode attributes.
      *
-     * @param array $atts
+     * @param string|array $atts Empty string if no attributes, array of attribute-value pairs otherwise.
      * @param string $content
+     *
+     * @throws InvalidArgumentException
      */
     public function __construct ($atts, $content = null) {
         if (empty($atts)) { $atts = array(); }
@@ -66,11 +69,33 @@ class Multisite_Directory_Shortcode {
             // Recognized shortcode attribute names and their values.
             'display' => 'map',
             'style'  => '',
-            'terms' => array(),
             'show_site_logo' => false,
             'logo_size' => array(72,72),
-            'query_args' => '', // Should be a JSON array which is passed to get_posts()
+            'query_args' => array(), // Should be a JSON array which is passed to get_posts()
+            'site_category__not_in' => '', // Convenience wrapper for complex tax_query
         ), array_map(array($this, 'parseJsonAttribute'), $atts));
+
+        // Parse special-case attributes.
+        if ($this->atts['site_category__not_in']) {
+            $q = array(
+                'taxonomy' => Multisite_Directory_Taxonomy::name,
+                'field'    => 'slug',
+                'terms'    => explode(',', $this->atts['site_category__not_in']),
+                'operator' => 'NOT IN',
+            );
+            if (!empty($this->atts['query_args']) && isset($this->atts['query_args']['tax_query'])) {
+                if (!is_array($this->atts['query_args']['tax_query'])) {
+                    throw new InvalidArgumentException(
+                        'tax_query must be of type array, was '
+                        . gettype($this->atts['query_args']['tax_query'])
+                    );
+                }
+                $this->atts['query_args']['tax_query'][] = $q;
+            } else {
+                $this->atts['query_args']['tax_query'] = array($q);
+            }
+        }
+
         $this->content = $content;
     }
 
