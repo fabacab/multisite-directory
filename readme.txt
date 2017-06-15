@@ -14,7 +14,7 @@ Add a browseable, flexible directory of the sites in a WP Multisite network. Eac
 
 Multisite Directory provides a customizable Network-wide site directory for WordPress Multisite installations. You can categorize subsites in your Network, add full-length descriptions and featured images to them, and more. Theme developers can customize the look and feel of the site directory using all the tools they're already familiar with. Blog authors can use a highly-configurable shortcode (`[site-directory]`) to display the directory anywhere shortcodes are supported.
 
-Each time a new site or blog is added to your Network, a corresponding entry in the site directory is added, too. The directory is managed from the Network's main site, but most changes to the subsites (other blogs) automatically update the directory. Many parts of a given site's appearance in the directory can be modified without affecting the site itself. This means a Super Admin can use a custom site logo, tagline, and so on in the directory itself, without changing the site's *actual* logo, tagline, and so on.
+Each time a new site or blog is added to your Network, a corresponding entry in the site directory is added, too. The directory is managed from the Network's main site, but most changes to the subsites (other blogs) automatically update the directory. Many parts of a given site's appearance in the directory can be modified without affecting the site itself. This means a Super Admin can use a custom site logo, tagline, and so on in the directory itself, without changing the site's *actual* logo, tagline, and so on. Additional options in the *Network Settings &rarr; Network Directory* section allows Super Admins to tweak the bells and whisltes, such as keeping Directory Entry titles in sync with Site Name changes.
 
 Site directory entries are implemented as a hierarchical custom post type in the main site. These pages can be categorized with a custom `subsite_category` taxonomy. We've found that this combination allows maximum flexibility while providing the tightest integration with existing WordPress core features. As a result, no new tables are added to your install, and no side effects are introduced. It Just Works.(TM)
 
@@ -77,6 +77,7 @@ By default, when you click on a pin in the directory's map view, you'll see a li
 * Updated translations and numerous compatibility improvements (props @hvianna).
 * Protect against errors when mistakenly activated on a single-site WordPress install.
 * [Enhancement](https://wordpress.org/support/topic/https-links-on-http-sub-site/#post-9232370): `get_site_permalink()` now supports the `scheme` parameter of [`get_site_url()`](https://developer.wordpress.org/reference/functions/get_site_url/).
+* Feature: Choose to keep Directory Entry titles in sync with Site Name changes.
 
 = 0.2.2 =
 

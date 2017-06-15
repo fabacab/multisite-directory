@@ -52,6 +52,9 @@ class WP_Multisite_Directory {
 
         add_action('wpmu_new_blog', array(__CLASS__, 'wpmu_new_blog'));
         add_action('delete_blog', array(__CLASS__, 'delete_blog'), 10, 2);
+        add_action( 'update_option_blogname', array( __CLASS__, 'update_option_blogname' ), 10, 2 );
+        add_action( 'wpmu_options', array( __CLASS__, 'wpmu_options' ) );
+        add_action( 'update_wpmu_options', array( __CLASS__, 'update_wpmu_options' ) );
         add_action('network_admin_menu', array('WP_Multisite_Directory_Admin', 'network_admin_menu'));
         add_action('signup_blogform', array(__CLASS__, 'signup_blogform'));
         add_action('network_site_new_form', array(__CLASS__, 'network_site_new_form'));
@@ -158,6 +161,71 @@ class WP_Multisite_Directory {
             wp_delete_post($post_id, $drop);
         }
         restore_current_blog();
+    }
+
+    /**
+     * Automatically sets the Directory Entry title to the Blog's new name.
+     *
+     * @link https://developer.wordpress.org/reference/hooks/update_option_option/
+     *
+     * @param mixed $old_value
+     * @param mixed $value
+     */
+    public static function update_option_blogname ( $old_value, $value ) {
+        if ( ! get_site_option( 'multisite-directory-auto-update-entry-title' ) ) {
+            return;
+        }
+        $blog = get_current_blog_id();
+        switch_to_blog( 1 );
+        $posts = get_posts( array(
+            'post_type' => Multisite_Directory_Entry::name,
+            'meta_key' => Multisite_Directory_Entry::blog_id_meta_key,
+            'meta_value' => $blog_id
+        ) );
+        if ( ! empty( $posts ) ) {
+            $post_id = $posts[0]->ID;
+            wp_update_post( array(
+                'ID' => $post_id,
+                'post_title' => $value
+            ) );
+        }
+        restore_current_blog();
+    }
+
+    /**
+     * Prints the Network Settings options.
+     *
+     * @link https://developer.wordpress.org/reference/hooks/wpmu_options/
+     */
+    public static function wpmu_options () {
+        print '<h2>' . esc_html__( 'Network Directory', 'multisite-directory' ) . '</h2>';
+        print '<table class="form-table"><tbody>';
+        print '<tr>';
+        print '<th scope="row">';
+        print esc_html__( 'Entry titles', 'multisite-directory' );
+        print '</th>';
+        print '<td><label>';
+        print '<input name="multisite-directory-auto-update-entry-title"';
+        print ' value="1" type="checkbox"';
+        print checked( true, get_site_option( 'multisite-directory-auto-update-entry-title' ), false );
+        print ' />';
+        print esc_html__( 'Update multisite directory entry titles when site names change', 'multisite-directory' );
+        print '</label></td>';
+        print '</tr>';
+        print '</tbody></table>';
+    }
+
+    /**
+     * Saves Network Settings.
+     *
+     * @link https://developer.wordpress.org/reference/hooks/update_wpmu_options/
+     */
+    public static function update_wpmu_options () {
+        if ( isset( $_POST['multisite-directory-auto-update-entry-title'] ) ) {
+            update_site_option( 'multisite-directory-auto-update-entry-title', true );
+        } else {
+            update_site_option( 'multisite-directory-auto-update-entry-title', false );
+        }
     }
 
     /**
