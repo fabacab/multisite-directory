@@ -196,17 +196,18 @@ if (!function_exists('get_site_permalink')) :
      * Gets the URL of the site.
      *
      * @param int $blog_id Optional. The ID of the site in question. Default is the blog ID of the current directory entry.
+     * @param string $scheme Optional. Scheme to give the site URL context. Accepts 'http', 'https', 'login', 'login_post', 'admin', or 'relative'.
      *
      * @return string
      */
-    function get_site_permalink ($blog_id = 0) {
+    function get_site_permalink ( $blog_id = 0, $scheme = null ) {
         $cpt = new Multisite_Directory_Entry();
-        if (!$blog_id) {
+        if ( ! $blog_id ) {
             global $post;
             $blog_id = $post->{$cpt::blog_id_meta_key};
         }
 
-        return get_site_url($blog_id);
+        return get_site_url( $blog_id, '', $scheme );
     }
 endif;
 
