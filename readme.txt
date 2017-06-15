@@ -3,10 +3,10 @@ Contributors: meitar
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=TJLPJYXHSRBEE&lc=US&item_name=Multisite%20Directory%20WordPress%20Plugin&item_number=multisite-directory&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: multisite, network, taxonomy, posts
 Requires at least: 4.6
-Tested up to: 4.7
+Tested up to: 4.8
 Stable tag: 0.2.3
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License: GPL-3.0
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Add a browseable, flexible directory of the sites in a WP Multisite network. Each subsite gets its own page.
 
@@ -76,6 +76,7 @@ By default, when you click on a pin in the directory's map view, you'll see a li
 
 * Updated translations and numerous compatibility improvements (props @hvianna).
 * Protect against errors when mistakenly activated on a single-site WordPress install.
+* [Enhancement](https://wordpress.org/support/topic/https-links-on-http-sub-site/#post-9232370): `get_site_permalink()` now supports the `scheme` parameter of [`get_site_url()`](https://developer.wordpress.org/reference/functions/get_site_url/).
 
 = 0.2.2 =
 
@@ -110,7 +111,7 @@ By default, when you click on a pin in the directory's map view, you'll see a li
 
 = 0.2.3 =
 
-This is a maintenance release, improving compatibility with WordPress 4.7 and adding updated translations.
+This is a maintenance release, improving compatibility with WordPress 4.8 and adding updated translations.
 
 == Other notes ==
 
