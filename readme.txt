@@ -78,6 +78,7 @@ By default, when you click on a pin in the directory's map view, you'll see a li
 * Protect against errors when mistakenly activated on a single-site WordPress install.
 * [Enhancement](https://wordpress.org/support/topic/https-links-on-http-sub-site/#post-9232370): `get_site_permalink()` now supports the `scheme` parameter of [`get_site_url()`](https://developer.wordpress.org/reference/functions/get_site_url/).
 * Feature: Choose to keep Directory Entry titles in sync with Site Name changes.
+* [Bugfix](https://wordpress.org/support/topic/shortcode-output-always-appearing-above-page-content/): Fix bug where shortcode was always printed above post content.
 
 = 0.2.2 =
 

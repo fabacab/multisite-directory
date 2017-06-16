@@ -56,6 +56,13 @@ class Multisite_Directory_Shortcode {
     private $content;
 
     /**
+     * The constructed HTML for this shortcode invocation.
+     *
+     * @var string
+     */
+    private $html = '';
+
+    /**
      * Parses shortcode attributes.
      *
      * @param string|array $atts Empty string if no attributes, array of attribute-value pairs otherwise.
@@ -291,26 +298,28 @@ class Multisite_Directory_Shortcode {
     }
 
     /**
-     * Prints the shortcode output to the browser.
+     * Gets the HTML of the currently constructed shortcode.
+     *
+     * @return string
      */
-    private function display () {
-        print $this->html;
+    public function getHtml () {
+        return $this->html;
     }
 
     /**
      * Registers the shortcode and its assets.
      */
     public static function register () {
-        add_shortcode('site-directory', array(__CLASS__, 'doShortcode'));
+        add_shortcode( 'site-directory', array( __CLASS__, 'doShortcode' ) );
 
         wp_register_style(
             'multisite-directory-map',
-            plugins_url('public/css/multisite-directory-map.css', dirname(__FILE__))
+            plugins_url( 'public/css/multisite-directory-map.css', dirname( __FILE__ ) )
         );
         wp_register_script(
             'multisite-directory-map',
-            plugins_url('public/js/multisite-directory-map.js', dirname(__FILE__)),
-            array('leaflet', 'jquery'),
+            plugins_url( 'public/js/multisite-directory-map.js', dirname( __FILE__ ) ),
+            array( 'leaflet', 'jquery' ),
             false,
             true
         );
@@ -353,15 +362,17 @@ class Multisite_Directory_Shortcode {
      *
      * @param array $atts
      * @param string $content
+     *
+     * @return string
      */
-    public static function doShortcode ($atts, $content = null) {
+    public static function doShortcode ( $atts, $content = null ) {
         self::$invocations++;
-        if (!is_multisite()) {
+        if ( ! is_multisite() ) {
             return;
         }
-        $shortcode = new self($atts, $content);
+        $shortcode = new self( $atts, $content );
         $shortcode->prepare();
-        $shortcode->display();
+        return $shortcode->getHtml();
     }
 
 }
