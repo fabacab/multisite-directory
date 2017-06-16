@@ -23,11 +23,11 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
         $wp_testcase = new WP_UnitTestCase();
         // Since the shortcode is only really intended for Multisite
         // installs, if this isn't a WP Multisite, we skip all tests.
-        if (!is_multisite()) {
-            $wp_testcase->markTestSkipped('Shortcode tests are for WP Multisite only.');
+        if ( ! is_multisite() ) {
+            $wp_testcase->markTestSkipped( 'Shortcode tests are for WP Multisite only.' );
         }
 
-        $wp_testcase->factory->blog->create_many(4); // 5 total
+        $wp_testcase->factory->blog->create_many( 4 ); // 5 total
     }
 
     /**
@@ -64,25 +64,25 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
      * @link https://wordpress.org/support/topic/problem-with-shortcode-on-page
      */
     public function test_invoking_without_attributes_does_not_trigger_warning () {
-        do_shortcode('[site-directory]');
+        do_shortcode( '[site-directory]' );
     }
 
     /**
      * Ensure that the shortcode can correctly count how many times it's been invoked.
      */
     public function test_can_remember_own_invocation_count () {
-        for ($i = 0; $i < 5; $i++) {
-            do_shortcode('[site-directory]');
+        for ( $i = 0; $i < 5; $i++ ) {
+            do_shortcode( '[site-directory]' );
         }
-        $this->assertSame(5, Multisite_Directory_Shortcode::$invocations);
+        $this->assertSame( 5, Multisite_Directory_Shortcode::$invocations );
     }
 
     /**
      * Ensure default output is a map container.
      */
     public function test_default_display_is_map_container () {
-        $this->expectOutputString('<div id="site-directory-1" class="site-directory-map" style=""></div>');
-        do_shortcode('[site-directory]');
+        $this->expectOutputString( '<div id="site-directory-1" class="site-directory-map" style=""></div>' );
+        print do_shortcode( '[site-directory]' );
     }
 
     /**
@@ -90,32 +90,32 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
      */
     public function test_inactive_sites_are_hidden () {
         $blog_ids = array();
-        $blog_ids[] = $this->factory->blog->create(array('meta' => array(
+        $blog_ids[] = $this->factory->blog->create( array( 'meta' => array(
             'spam' => true
-        )));
-        $blog_ids[] = $this->factory->blog->create(array('meta' => array(
+        ) ) );
+        $blog_ids[] = $this->factory->blog->create( array( 'meta' => array(
             'archived' => true
-        )));
-        $blog_ids[] = $this->factory->blog->create(array('meta' => array(
+        ) ) );
+        $blog_ids[] = $this->factory->blog->create( array( 'meta' => array(
             'deleted' => true
-        )));
-        $blog_ids[] = $this->factory->blog->create(array('title' => 'Active Site'));
-        $term = wp_insert_term('Test Category', 'subsite_category');
-        $posts = get_posts(array(
+        ) ) );
+        $blog_ids[] = $this->factory->blog->create( array( 'title' => 'Active Site' ) );
+        $term = wp_insert_term( 'Test Category', 'subsite_category' );
+        $posts = get_posts( array(
             'post_type' => 'network_directory',
             'meta_key' => Multisite_Directory_Entry::blog_id_meta_key,
             'meta_value' => $blog_ids
-        ));
-        foreach ($posts as $post) {
-            wp_set_post_terms($post->ID, $term['term_id'], 'subsite_category');
+        ) );
+        foreach ( $posts as $post ) {
+            wp_set_post_terms( $post->ID, $term['term_id'], 'subsite_category' );
         }
 
-        $this->setOutputCallback(array($this, 'collectBlogTitles'));
-        $this->expectOutputString('Active Site');
-        do_shortcode('[site-directory display="list"]');
+        $this->setOutputCallback( array( $this, 'collectBlogTitles' ) );
+        $this->expectOutputString( 'Active Site' );
+        print do_shortcode( '[site-directory display="list"]' );
 
         // Clean up the test category from the database.
-        wp_delete_term($term['term_id'], 'subsite_category');
+        wp_delete_term( $term['term_id'], 'subsite_category' );
     }
 
     /**
@@ -124,33 +124,33 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
     public function test_query_args_can_alphabetize_list_output () {
         // Create a set of new sites with custom names.
         $blog_ids = array();
-        $blog_ids[] = $this->factory->blog->create(array('title' => 'A Blog'));
-        $blog_ids[] = $this->factory->blog->create(array('title' => 'B Blog'));
-        $blog_ids[] = $this->factory->blog->create(array('title' => 'C Blog'));
+        $blog_ids[] = $this->factory->blog->create( array( 'title' => 'A Blog' ) );
+        $blog_ids[] = $this->factory->blog->create( array( 'title' => 'B Blog' ) );
+        $blog_ids[] = $this->factory->blog->create( array( 'title' => 'C Blog' ) );
 
         // Assign the new site entries a test category to group them.
         // TODO: Add a custom taxonomy factory helper.
-        $term = wp_insert_term('Test Category', 'subsite_category');
-        $posts = get_posts(array(
+        $term = wp_insert_term( 'Test Category', 'subsite_category' );
+        $posts = get_posts( array(
             'post_type' => 'network_directory',
             'meta_key' => Multisite_Directory_Entry::blog_id_meta_key,
             'meta_value' => $blog_ids
         ));
-        foreach ($posts as $post) {
-            wp_set_post_terms($post->ID, $term['term_id'], 'subsite_category');
+        foreach ( $posts as $post ) {
+            wp_set_post_terms( $post->ID, $term['term_id'], 'subsite_category' );
         }
 
-        $this->setOutputCallback(array($this, 'collectBlogTitles'));
-        $this->expectOutputString('A Blog,B Blog,C Blog');
+        $this->setOutputCallback( array( $this, 'collectBlogTitles' ) );
+        $this->expectOutputString( 'A Blog,B Blog,C Blog' );
 
-        $query_args = json_encode(array(
+        $query_args = json_encode( array(
             'orderby' => 'title',
             'order' => 'ASC'
-        ));
-        do_shortcode("[site-directory display='list' query_args='$query_args']");
+        ) );
+        print do_shortcode( "[site-directory display='list' query_args='$query_args']" );
 
         // Clean up the test category from the database.
-        wp_delete_term($term['term_id'], 'subsite_category');
+        wp_delete_term( $term['term_id'], 'subsite_category' );
     }
 
     /**
@@ -158,9 +158,9 @@ class Multisite_Directory_Shortcode_TestCase extends WP_UnitTestCase {
      *
      * This is useful for testing ordering.
      */
-    public function collectBlogTitles ($output) {
-        preg_match_all('/a href="(?:.*?)">(.*?)</', $output, $matches);
-        return join(',', array_pop($matches));
+    public function collectBlogTitles ( $output ) {
+        preg_match_all( '/a href="(?:.*?)">(.*?)</', $output, $matches );
+        return join( ',', array_pop( $matches ) );
     }
 
 }
@@ -174,8 +174,8 @@ class Multisite_Directory_Shortcode_On_Singlesite_TestCase extends WP_UnitTestCa
      * Set up tests for single site.
      */
     public function setUp () {
-        if (is_multisite()) {
-            $this->markTestSkipped('Single-site tests are skipped on WP Multisite builds.');
+        if ( is_multisite() ) {
+            $this->markTestSkipped( 'Single-site tests are skipped on WP Multisite builds.' );
         }
     }
 
@@ -183,6 +183,6 @@ class Multisite_Directory_Shortcode_On_Singlesite_TestCase extends WP_UnitTestCa
      * Ensure shortode is not registered on single-site installs.
      */
     public function test_shortcode_is_unregistered () {
-        $this->assertFalse(shortcode_exists('site-directory'));
+        $this->assertFalse( shortcode_exists( 'site-directory' ) );
     }
 }
